@@ -51,15 +51,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ChangeView",
-                    "type": "Button",
-                    "id": "03ea6f13-c1f8-44fe-aa9d-279110589547",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "f06b8de1-515f-4d86-a111-316e2ff174cc",
@@ -155,17 +146,6 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f2aa1990-07d7-423d-923f-f36b7b46144b",
-                    "path": "<Keyboard>/backquote",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ChangeView",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
