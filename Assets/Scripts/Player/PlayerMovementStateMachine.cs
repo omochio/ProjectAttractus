@@ -33,6 +33,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     PlayerParameters _playerParameters;
     PlayerInputHandler _playerInputHandler;
     Rigidbody _rb;
+    Collider _collider;
 
 
     void Awake()
@@ -41,6 +42,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
         TryGetComponent(out _playerParameters);
         TryGetComponent(out _rb);
         TryGetComponent(out _playerInputHandler);
+        TryGetComponent(out _collider);
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>(this);
 
@@ -109,7 +111,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _rb.AddForce(Vector3.down * _playerParameters.gravityAcceleration, ForceMode.Acceleration);
 
-        _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position, -Vector3.up, 0.11f);
+        _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position, Vector3.down, 0.1f);
+
+        Debug.Log(Physics.Raycast(transform.position, Vector3.down, 0.1f));
 
         if (_rb.velocity.sqrMagnitude < _playerParameters.crouchSpeed.sqrMagnitude || !_playerStatuses.isGrounded)
         {
@@ -128,8 +132,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _stateMachine.Update();
 
-        //Debug.Log(_playerStatuses.isGrounded);
-        Debug.Log(_rb.velocity);
     }
 
 
