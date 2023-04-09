@@ -111,9 +111,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _rb.AddForce(Vector3.down * _playerParameters.gravityAcceleration, ForceMode.Acceleration);
 
-        _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position, Vector3.down, 0.1f);
-
-        Debug.Log(Physics.Raycast(transform.position, Vector3.down, 0.1f));
+        _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position + Vector3.up * _collider.bounds.extents.y, Vector3.down, _collider.bounds.extents.y + 0.11f);
 
         if (_rb.velocity.sqrMagnitude < _playerParameters.crouchSpeed.sqrMagnitude || !_playerStatuses.isGrounded)
         {
@@ -131,6 +129,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _playerStatuses.isSlideCooling = _playerStatuses.slideElapsedTime < _playerParameters.slideCoolTime;
 
         _stateMachine.Update();
+
+        Debug.Log(_stateMachine.CurrentStateName);
 
     }
 
