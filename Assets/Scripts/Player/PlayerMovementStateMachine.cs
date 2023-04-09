@@ -356,8 +356,14 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class JumpState : PlayerMovementStateBase
     {
+        Vector3 _initVelocity;
+
         protected internal override void Enter()
         {
+            _initVelocity = new(
+                Context._rb.velocity.x, 
+                0f, 
+                Context._rb.velocity.z);
             Vector3 force = Context.transform.rotation * Vector3.up * Context._playerParameters.jumpForce;
             Context._rb.AddForce(force, ForceMode.Impulse);
             Context._playerStatuses.isGrounded = false;
@@ -370,15 +376,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 0f,
                 Context._playerInputHandler.moveInput.y);
 
-            Vector3 horizontalVelocity = new(
-                Context._rb.velocity.x,
-                0f,
-                Context._rb.velocity.z);
+            //Vector3 horizontalVelocity = new(
+            //    Context._rb.velocity.x,
+            //    0f,
+            //    Context._rb.velocity.z);
 
             Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
                 input.x * Context._playerParameters.jumpAdditionalSpeed.x,
                 0f,
-                input.z * Context._playerParameters.jumpAdditionalSpeed.y) * (Mathf.Acos(Vector3.Dot(horizontalVelocity.normalized, Context.transform.rotation * input.normalized)) / Mathf.PI)) + Context._rb.velocity;
+                input.z * Context._playerParameters.jumpAdditionalSpeed.y) * (Mathf.Acos(Vector3.Dot(_initVelocity.normalized, Context.transform.rotation * input.normalized)) / Mathf.PI)) + Context._rb.velocity;
 
             Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
 
