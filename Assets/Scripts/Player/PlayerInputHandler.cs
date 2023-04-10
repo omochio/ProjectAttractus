@@ -1,3 +1,4 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
     PlayerInput _input;
     PlayerStatuses _playerStatuses;
+    PlayerParameters _playerParams;
 
     Vector2 _moveInput = new();
     public Vector2 moveInput
@@ -12,10 +14,17 @@ public class PlayerInputHandler : MonoBehaviour
         get { return _moveInput; }
     }
 
+    Vector2 _smoothedMoveInput = new();
+    public Vector2 smoothedMoveInput
+    {
+        get { return _smoothedMoveInput; }
+    }
+
     void Awake()
     {
         TryGetComponent(out _input);
         TryGetComponent(out _playerStatuses);
+        TryGetComponent(out _playerParams);
     }
 
     void OnEnable()
@@ -29,6 +38,11 @@ public class PlayerInputHandler : MonoBehaviour
         _input.actions["CrouchOrSlide"].canceled += OnCrouchOrSlide;
         _input.actions["Attack"].performed += OnAttack;
         _input.actions["Attack"].canceled += OnAttack;
+    }
+
+    void Update()
+    {
+        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, moveInput, _playerParams.baseSpeedLerpRate, Time.deltaTime);
     }
 
     void OnMove(InputAction.CallbackContext context)

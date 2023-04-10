@@ -1,9 +1,13 @@
 using UnityEngine;
 using IceMilkTea.Core;
+using System.Collections.Generic;
 
 public class PlayerMovementStateMachine : MonoBehaviour
 {
-    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>.State { }
+    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>.State 
+    {
+        protected virtual void SwitchState() { }
+    }
 
     public enum MovementStateEvent
     {
@@ -34,6 +38,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
     PlayerInputHandler _playerInputHandler;
     Rigidbody _rb;
     Collider _collider;
+    Animator _animator;
+    PlayerAnimatorParameters _animPrams;
 
 
     void Awake()
@@ -43,6 +49,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
         TryGetComponent(out _rb);
         TryGetComponent(out _playerInputHandler);
         TryGetComponent(out _collider);
+        TryGetComponent(out _animator);
+        _animPrams = new();
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>(this);
 
@@ -108,9 +116,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     void FixedUpdate()
     {
+        _animator.SetFloat(_animPrams.animParamIDs["moveX"], _playerInputHandler.smoothedMoveInput.x);
+        _animator.SetFloat(_animPrams.animParamIDs["moveY"], _playerInputHandler.smoothedMoveInput.y);
 
         _rb.AddForce(Vector3.down * _playerParameters.gravityAcceleration, ForceMode.Acceleration);
 
+        // TODO: Re consider conditions
         _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position + Vector3.up * _collider.bounds.extents.y, Vector3.down, _collider.bounds.extents.y + 0.11f);
 
         if (_rb.velocity.sqrMagnitude < _playerParameters.crouchSpeed.sqrMagnitude || !_playerStatuses.isGrounded)
@@ -139,14 +150,25 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class IdleState : PlayerMovementStateBase
     {
+        protected internal override void Enter()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["idle"], true);
+        }
+
         protected internal override void Update()
         {
             Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, Vector3.zero, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
 
-            SwitchStateByInput();
+            SwitchState();
         }
 
-        void SwitchStateByInput()
+        protected internal override void Exit()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["idle"], false);
+        }
+
+
+        protected override void SwitchState()
         {
             if (Context._playerStatuses.jumpInvoked)
             {
@@ -172,6 +194,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class WalkState : PlayerMovementStateBase
     {
+        protected internal override void Enter()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["walk"], true);
+        }
+
         protected internal override void Update()
         {
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
@@ -180,10 +207,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.walkSpeed.y);
             Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
 
-            SwitchStateByInput();
+            SwitchState();
         }
 
-        void SwitchStateByInput()
+        protected internal override void Exit()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["walk"], false);
+        }
+
+        protected override void SwitchState()
         {
             if (!Context._playerStatuses.moveInvoked)
             {
@@ -206,6 +238,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class SprintState : PlayerMovementStateBase
     {
+        protected internal override void Enter()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["sprint"], true);
+        }
+
         protected internal override void Update()
         {
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
@@ -214,10 +251,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.sprintSpeed.y);
             Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
             
-            SwitchStateByInput();
+            SwitchState();
         }
 
-        void SwitchStateByInput()
+        protected internal override void Exit()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["sprint"], false);
+        }
+
+        protected override void SwitchState()
         {
             if (!Context._playerStatuses.moveInvoked)
             {
@@ -243,6 +285,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class CrouchState : PlayerMovementStateBase
     {
+        protected internal override void Enter()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["crouch"], true);
+        }
+
         protected internal override void Update()
         {
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
@@ -254,7 +301,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
             SwitchState();
         }
 
-        void SwitchState()
+        protected internal override void Exit()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["crouch"], false);
+        }
+
+        protected override void SwitchState()
         {
             if (Context._playerStatuses.jumpInvoked)
             {
@@ -285,6 +337,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["slide"], true);
+
             float slideForce;
 
             if (Context._playerStatuses.isSlideCooling)
@@ -318,7 +372,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
             SwitchState();
         }
 
-        void SwitchState()
+        protected internal override void Exit()
+        {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["slide"], false);
+        }
+
+        protected override void SwitchState()
         {
 
             if (Context._playerStatuses.jumpInvoked)
@@ -360,6 +419,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Enter()
         {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["jump"], true);
+
             _initVelocity = new(
                 Context._rb.velocity.x, 
                 0f, 
@@ -375,11 +436,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.x,
                 0f,
                 Context._playerInputHandler.moveInput.y);
-
-            //Vector3 horizontalVelocity = new(
-            //    Context._rb.velocity.x,
-            //    0f,
-            //    Context._rb.velocity.z);
 
             Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
                 input.x * Context._playerParameters.jumpAdditionalSpeed.x,
@@ -397,10 +453,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Exit()
         {
+            Context._animator.SetBool(Context._animPrams.animParamIDs["jump"], false);
+
             Context._playerStatuses.jumpInvoked = false;
         }
 
-        void SwitchState()
+        protected override void SwitchState()
         {
             if (Context._playerStatuses.crouchOrSlideInvoked)
             {
