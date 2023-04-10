@@ -1,15 +1,19 @@
 using UnityEngine;
 using IceMilkTea.Core;
-using System.Collections.Generic;
+using UnityEngine.Events;
 
-public class PlayerMovementStateMachine : MonoBehaviour
+public class PlayerStateMachine : MonoBehaviour
 {
-    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>.State 
+    class PlayerMovementStateBase : ImtStateMachine<PlayerStateMachine, MovementStateEvent>.State 
     {
+        protected internal override void Enter()
+        {
+            Context._switchState = SwitchState;
+        }
         protected virtual void SwitchState() { }
     }
 
-    public enum MovementStateEvent
+    enum MovementStateEvent
     {
         doNothing,
         Idle,
@@ -20,23 +24,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
         Jump,
     }
 
-    ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent> _stateMachine;
-    public ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent> stateMachine
-    {
-        get { return _stateMachine; }
-    }
+    ImtStateMachine<PlayerStateMachine, MovementStateEvent> _stateMachine;
 
-    bool _isTransitionable = true;
-    public bool isTransitionable
-    {
-        get { return _isTransitionable; }
-        set { _isTransitionable = value; }
-    }
+    UnityAction _switchState;
 
     PlayerStatuses _playerStatuses;
     PlayerParameters _playerParameters;
     PlayerInputHandler _playerInputHandler;
-    Rigidbody _rb;
+    //Rigidbody _rb;
+    PlayerMovementManager _playerMovementManager;
     Collider _collider;
     Animator _animator;
     PlayerAnimatorParameters _animPrams;
@@ -46,13 +42,14 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         TryGetComponent(out _playerStatuses);
         TryGetComponent(out _playerParameters);
-        TryGetComponent(out _rb);
+        //TryGetComponent(out _rb);
+        TryGetComponent(out _playerMovementManager);
         TryGetComponent(out _playerInputHandler);
         TryGetComponent(out _collider);
         TryGetComponent(out _animator);
         _animPrams = new();
 
-        _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, MovementStateEvent>(this);
+        _stateMachine = new ImtStateMachine<PlayerStateMachine, MovementStateEvent>(this);
 
         _stateMachine.SetStartState<IdleState>();
 
@@ -111,6 +108,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         _playerStatuses.slideElapsedTime = _playerParameters.slideCoolTime;
 
+        _playerMovementManager.gravityAcceleration = Vector3.down * _playerParameters.gravityAcceleration;
+        _playerMovementManager.lerpRate = _playerParameters.baseSpeedLerpRate;
+
         _stateMachine.Update();
     }
 
@@ -119,16 +119,19 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _animator.SetFloat(_animPrams.animParamIDs["moveX"], _playerInputHandler.smoothedMoveInput.x);
         _animator.SetFloat(_animPrams.animParamIDs["moveY"], _playerInputHandler.smoothedMoveInput.y);
 
-        _rb.AddForce(Vector3.down * _playerParameters.gravityAcceleration, ForceMode.Acceleration);
+        _playerMovementManager.ApplyGravity();
 
         // TODO: Re consider conditions
-        _playerStatuses.isGrounded = (Mathf.Abs(_rb.velocity.y) <= 0.1f) && Physics.Raycast(transform.position + Vector3.up * _collider.bounds.extents.y, Vector3.down, _collider.bounds.extents.y + 0.11f);
+        _playerStatuses.isGrounded = (Mathf.Abs(_playerMovementManager.GetVelocity().y) <= 0.1f) && Physics.Raycast(transform.position + Vector3.up * _collider.bounds.extents.y, Vector3.down, _collider.bounds.extents.y + 0.11f);
 
-        if (_rb.velocity.sqrMagnitude < _playerParameters.crouchSpeed.sqrMagnitude || !_playerStatuses.isGrounded)
+        Vector2 horizontalVelocity = new(
+            _playerMovementManager.GetVelocity().x,
+            _playerMovementManager.GetVelocity().z);
+        if (horizontalVelocity.sqrMagnitude < Mathf.Pow(_playerParameters.minSlidableSpeed, 2f) || !_playerStatuses.isGrounded)
         {
             _playerStatuses.isSlidable = false;
         }
-        else if (_rb.velocity.sqrMagnitude > Mathf.Pow(_playerParameters.minSlidableSpeed, 2f))
+        else
         {
             _playerStatuses.isSlidable = true;
         }
@@ -141,6 +144,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _stateMachine.Update();
 
+        _playerMovementManager.ApplyVelocityChange();
+        _switchState.Invoke();
+
         Debug.Log(_stateMachine.CurrentStateName);
 
     }
@@ -152,14 +158,13 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["idle"], true);
         }
 
         protected internal override void Update()
         {
-            Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, Vector3.zero, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
-
-            SwitchState();
+            Context._playerMovementManager.targetVelocity = Vector3.zero;
         }
 
         protected internal override void Exit()
@@ -196,6 +201,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["walk"], true);
         }
 
@@ -205,9 +211,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.walkSpeed.x,
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.walkSpeed.y);
-            Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
-
-            SwitchState();
+            Context._playerMovementManager.targetVelocity = targetVelocity;
         }
 
         protected internal override void Exit()
@@ -240,6 +244,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["sprint"], true);
         }
 
@@ -249,9 +254,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.sprintSpeed.x,
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.sprintSpeed.y);
-            Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
-            
-            SwitchState();
+            Context._playerMovementManager.targetVelocity = targetVelocity;
         }
 
         protected internal override void Exit()
@@ -287,6 +290,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["crouch"], true);
         }
 
@@ -296,9 +300,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.crouchSpeed.x,
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.crouchSpeed.y);
-            Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
-
-            SwitchState();
+            Context._playerMovementManager.targetVelocity = targetVelocity;
         }
 
         protected internal override void Exit()
@@ -337,6 +339,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["slide"], true);
 
             float slideForce;
@@ -355,7 +358,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 0f,
                 Context._playerInputHandler.moveInput.y) * slideForce;
 
-            Context._rb.AddForce(force, ForceMode.Impulse);
+            Context._playerMovementManager.AddForce(force, ForceMode.Impulse);
 
             Context._playerStatuses.slideElapsedTime = 0f;
         }
@@ -363,13 +366,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             Vector3 resistanceAcceleration = new(
-                -Context._rb.velocity.normalized.x * Context._playerParameters.slideResistanceAcceleration.x,
+                -Context._playerMovementManager.GetVelocity().normalized.x * Context._playerParameters.slideResistanceAcceleration.x,
                 0f,
-                -Context._rb.velocity.normalized.z * Context._playerParameters.slideResistanceAcceleration.y);
+                -Context._playerMovementManager.GetVelocity().normalized.z * Context._playerParameters.slideResistanceAcceleration.y);
 
-            Context._rb.AddForce(resistanceAcceleration, ForceMode.Acceleration);
-
-            SwitchState();
+            Context._playerMovementManager.AddForce(resistanceAcceleration, ForceMode.Acceleration);
         }
 
         protected internal override void Exit()
@@ -419,14 +420,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Enter()
         {
+            base.Enter();
             Context._animator.SetBool(Context._animPrams.animParamIDs["jump"], true);
 
             _initVelocity = new(
-                Context._rb.velocity.x, 
+                Context._playerMovementManager.GetVelocity().x, 
                 0f, 
-                Context._rb.velocity.z);
+                Context._playerMovementManager.GetVelocity().z);
             Vector3 force = Context.transform.rotation * Vector3.up * Context._playerParameters.jumpForce;
-            Context._rb.AddForce(force, ForceMode.Impulse);
+            Context._playerMovementManager.AddForce(force, ForceMode.Impulse);
             Context._playerStatuses.isGrounded = false;
         }
 
@@ -440,14 +442,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
             Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
                 input.x * Context._playerParameters.jumpAdditionalSpeed.x,
                 0f,
-                input.z * Context._playerParameters.jumpAdditionalSpeed.y) * (Mathf.Acos(Vector3.Dot(_initVelocity.normalized, Context.transform.rotation * input.normalized)) / Mathf.PI)) + Context._rb.velocity;
+                input.z * Context._playerParameters.jumpAdditionalSpeed.y) * (Mathf.Acos(Vector3.Dot(_initVelocity.normalized, Context.transform.rotation * input.normalized)) / Mathf.PI)) + Context._playerMovementManager.GetVelocity();
 
-            Context._rb.velocity = Utilities.FRILerp(Context._rb.velocity, targetVelocity, Context._playerParameters.baseSpeedLerpRate, Time.fixedDeltaTime);
-
-            if (Context._playerStatuses.isGrounded)
-            {
-                SwitchState();
-            }
+            Context._playerMovementManager.targetVelocity = targetVelocity;
         }
 
 
@@ -460,31 +457,34 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            if (Context._playerStatuses.crouchOrSlideInvoked)
+            if (Context._playerStatuses.isGrounded)
             {
-                if (Context._playerStatuses.isSlidable)
+                if (Context._playerStatuses.crouchOrSlideInvoked)
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Slide);
+                    if (Context._playerStatuses.isSlidable)
+                    {
+                        StateMachine.SendEvent(MovementStateEvent.Slide);
+                    }
+                    else
+                    {
+                        StateMachine.SendEvent(MovementStateEvent.Crouch);
+                    }
+                }
+                else if (Context._playerStatuses.moveInvoked)
+                {
+                    if (Context._playerStatuses.sprintInvoked)
+                    {
+                        StateMachine.SendEvent(MovementStateEvent.Sprint);
+                    }
+                    else
+                    {
+                        StateMachine.SendEvent(MovementStateEvent.Walk);
+                    }
                 }
                 else
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Crouch);
+                    StateMachine.SendEvent(MovementStateEvent.Idle);
                 }
-            }
-            else if (Context._playerStatuses.moveInvoked)
-            {
-                if (Context._playerStatuses.sprintInvoked)
-                {
-                    StateMachine.SendEvent(MovementStateEvent.Sprint);
-                }
-                else
-                {
-                    StateMachine.SendEvent(MovementStateEvent.Walk);
-                }
-            }
-            else
-            {
-                StateMachine.SendEvent(MovementStateEvent.Idle);
             }
         }
     }
