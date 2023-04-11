@@ -38,6 +38,7 @@ public class PlayerInputHandler : MonoBehaviour
         _input.actions["CrouchOrSlide"].canceled += OnCrouchOrSlide;
         _input.actions["Attack"].performed += OnAttack;
         _input.actions["Attack"].canceled += OnAttack;
+        _input.actions["Reload"].performed += OnReload;
     }
 
     void Update()
@@ -108,6 +109,16 @@ public class PlayerInputHandler : MonoBehaviour
                 break;
             case InputActionPhase.Canceled:
                 _playerStatuses.attackInvoked = false;
+                break;
+        }
+    }
+
+    void OnReload(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                _playerStatuses.reloadInvoked = true;
                 break;
         }
     }

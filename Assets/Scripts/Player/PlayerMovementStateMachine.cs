@@ -2,18 +2,19 @@ using UnityEngine;
 using IceMilkTea.Core;
 using UnityEngine.Events;
 
-public class PlayerStateMachine : MonoBehaviour
+public class PlayerMovementStateMachine : MonoBehaviour
 {
-    class PlayerMovementStateBase : ImtStateMachine<PlayerStateMachine, MovementStateEvent>.State 
+    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, StateEvent>.State 
     {
         protected internal override void Enter()
         {
             Context._switchState = SwitchState;
         }
+
         protected virtual void SwitchState() { }
     }
 
-    enum MovementStateEvent
+    enum StateEvent
     {
         doNothing,
         Idle,
@@ -24,14 +25,13 @@ public class PlayerStateMachine : MonoBehaviour
         Jump,
     }
 
-    ImtStateMachine<PlayerStateMachine, MovementStateEvent> _stateMachine;
+    ImtStateMachine<PlayerMovementStateMachine, StateEvent> _stateMachine;
 
     UnityAction _switchState;
 
     PlayerStatuses _playerStatuses;
     PlayerParameters _playerParameters;
     PlayerInputHandler _playerInputHandler;
-    //Rigidbody _rb;
     PlayerMovementManager _playerMovementManager;
     Collider _collider;
     Animator _animator;
@@ -42,66 +42,65 @@ public class PlayerStateMachine : MonoBehaviour
     {
         TryGetComponent(out _playerStatuses);
         TryGetComponent(out _playerParameters);
-        //TryGetComponent(out _rb);
         TryGetComponent(out _playerMovementManager);
         TryGetComponent(out _playerInputHandler);
         TryGetComponent(out _collider);
         TryGetComponent(out _animator);
         _animPrams = new();
 
-        _stateMachine = new ImtStateMachine<PlayerStateMachine, MovementStateEvent>(this);
+        _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, StateEvent>(this);
 
         _stateMachine.SetStartState<IdleState>();
 
         // Any states
-        _stateMachine.AddAnyTransition<DoNothingState>(MovementStateEvent.doNothing);
+        _stateMachine.AddAnyTransition<DoNothingState>(StateEvent.doNothing);
 
-        //From DoNothing
-        _stateMachine.AddTransition<DoNothingState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<DoNothingState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<DoNothingState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<DoNothingState, CrouchState>(MovementStateEvent.Crouch);
-        _stateMachine.AddTransition<DoNothingState, SlideState>(MovementStateEvent.Slide);
-        _stateMachine.AddTransition<DoNothingState, JumpState>(MovementStateEvent.Jump);
+        // From DoNothing
+        _stateMachine.AddTransition<DoNothingState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<DoNothingState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<DoNothingState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<DoNothingState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<DoNothingState, SlideState>(StateEvent.Slide);
+        _stateMachine.AddTransition<DoNothingState, JumpState>(StateEvent.Jump);
 
         // From Idle
-        _stateMachine.AddTransition<IdleState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<IdleState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<IdleState, CrouchState>(MovementStateEvent.Crouch);
-        _stateMachine.AddTransition<IdleState, JumpState>(MovementStateEvent.Jump);
+        _stateMachine.AddTransition<IdleState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<IdleState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<IdleState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<IdleState, JumpState>(StateEvent.Jump);
 
         // From Walk
-        _stateMachine.AddTransition<WalkState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<WalkState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<WalkState, CrouchState>(MovementStateEvent.Crouch);
-        _stateMachine.AddTransition<WalkState, JumpState>(MovementStateEvent.Jump);
+        _stateMachine.AddTransition<WalkState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<WalkState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<WalkState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<WalkState, JumpState>(StateEvent.Jump);
         
         // From Sprint
-        _stateMachine.AddTransition<SprintState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<SprintState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<SprintState, SlideState>(MovementStateEvent.Slide);
-        _stateMachine.AddTransition<SprintState, CrouchState>(MovementStateEvent.Crouch);
-        _stateMachine.AddTransition<SprintState, JumpState>(MovementStateEvent.Jump);
+        _stateMachine.AddTransition<SprintState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<SprintState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<SprintState, SlideState>(StateEvent.Slide);
+        _stateMachine.AddTransition<SprintState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<SprintState, JumpState>(StateEvent.Jump);
 
         // From Slide
-        _stateMachine.AddTransition<SlideState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<SlideState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<SlideState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<SlideState, CrouchState>(MovementStateEvent.Crouch);
-        _stateMachine.AddTransition<SlideState, JumpState>(MovementStateEvent.Jump);
+        _stateMachine.AddTransition<SlideState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<SlideState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<SlideState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<SlideState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<SlideState, JumpState>(StateEvent.Jump);
         
         // From Crouch
-        _stateMachine.AddTransition<CrouchState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<CrouchState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<CrouchState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<CrouchState, JumpState>(MovementStateEvent.Jump);
+        _stateMachine.AddTransition<CrouchState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<CrouchState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<CrouchState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<CrouchState, JumpState>(StateEvent.Jump);
 
         // From Jump
-        _stateMachine.AddTransition<JumpState, IdleState>(MovementStateEvent.Idle);
-        _stateMachine.AddTransition<JumpState, WalkState>(MovementStateEvent.Walk);
-        _stateMachine.AddTransition<JumpState, SprintState>(MovementStateEvent.Sprint);
-        _stateMachine.AddTransition<JumpState, SlideState>(MovementStateEvent.Slide);
-        _stateMachine.AddTransition<JumpState, CrouchState>(MovementStateEvent.Crouch);
+        _stateMachine.AddTransition<JumpState, IdleState>(StateEvent.Idle);
+        _stateMachine.AddTransition<JumpState, WalkState>(StateEvent.Walk);
+        _stateMachine.AddTransition<JumpState, SprintState>(StateEvent.Sprint);
+        _stateMachine.AddTransition<JumpState, SlideState>(StateEvent.Slide);
+        _stateMachine.AddTransition<JumpState, CrouchState>(StateEvent.Crouch);
     }
 
     void Start()
@@ -177,21 +176,21 @@ public class PlayerStateMachine : MonoBehaviour
         {
             if (Context._playerStatuses.jumpInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Jump);
+                StateMachine.SendEvent(StateEvent.Jump);
             }
             else if (Context._playerStatuses.crouchOrSlideInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Crouch);
+                StateMachine.SendEvent(StateEvent.Crouch);
             }
             else if (Context._playerStatuses.moveInvoked)
             {
                 if (Context._playerStatuses.sprintInvoked)
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Sprint);
+                    StateMachine.SendEvent(StateEvent.Sprint);
                 }
                 else
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Walk);
+                    StateMachine.SendEvent(StateEvent.Walk);
                 }
             }
         }
@@ -223,19 +222,19 @@ public class PlayerStateMachine : MonoBehaviour
         {
             if (!Context._playerStatuses.moveInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Idle);
+                StateMachine.SendEvent(StateEvent.Idle);
             }
             else if (Context._playerStatuses.sprintInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Sprint);
+                StateMachine.SendEvent(StateEvent.Sprint);
             }
             else if (Context._playerStatuses.crouchOrSlideInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Crouch);
+                StateMachine.SendEvent(StateEvent.Crouch);
             }
             else if (Context._playerStatuses.jumpInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Jump);
+                StateMachine.SendEvent(StateEvent.Jump);
             }
         }
     }
@@ -266,22 +265,22 @@ public class PlayerStateMachine : MonoBehaviour
         {
             if (!Context._playerStatuses.moveInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Idle);
+                StateMachine.SendEvent(StateEvent.Idle);
             }
             else if (!Context._playerStatuses.sprintInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Walk);
+                StateMachine.SendEvent(StateEvent.Walk);
             }
             else if (Context._playerStatuses.crouchOrSlideInvoked)
             {
                 if (Context._playerStatuses.isSlidable)
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Slide);
+                    StateMachine.SendEvent(StateEvent.Slide);
                 }
             }
             else if (Context._playerStatuses.jumpInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Jump);
+                StateMachine.SendEvent(StateEvent.Jump);
             }
         }
     }
@@ -312,7 +311,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             if (Context._playerStatuses.jumpInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Jump);
+                StateMachine.SendEvent(StateEvent.Jump);
             }
             else if (!Context._playerStatuses.crouchOrSlideInvoked)
             {
@@ -320,16 +319,16 @@ public class PlayerStateMachine : MonoBehaviour
                 {
                     if (Context._playerStatuses.sprintInvoked)
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Sprint);
+                        StateMachine.SendEvent(StateEvent.Sprint);
                     }
                     else
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Walk);
+                        StateMachine.SendEvent(StateEvent.Walk);
                     }
                 }
                 else
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Idle);
+                    StateMachine.SendEvent(StateEvent.Idle);
                 }
             }
         }
@@ -383,7 +382,7 @@ public class PlayerStateMachine : MonoBehaviour
 
             if (Context._playerStatuses.jumpInvoked)
             {
-                StateMachine.SendEvent(MovementStateEvent.Jump);
+                StateMachine.SendEvent(StateEvent.Jump);
             }
             else if (!Context._playerStatuses.crouchOrSlideInvoked)
             {
@@ -391,23 +390,23 @@ public class PlayerStateMachine : MonoBehaviour
                 {
                     if (Context._playerStatuses.sprintInvoked)
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Sprint);
+                        StateMachine.SendEvent(StateEvent.Sprint);
                     }
                     else
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Walk);
+                        StateMachine.SendEvent(StateEvent.Walk);
                     }
                 }
                 else
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Idle);
+                    StateMachine.SendEvent(StateEvent.Idle);
                 }
             }
             else
             {
                 if (!Context._playerStatuses.isSlidable)
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Crouch);
+                    StateMachine.SendEvent(StateEvent.Crouch);
                 }
             }
 
@@ -463,27 +462,27 @@ public class PlayerStateMachine : MonoBehaviour
                 {
                     if (Context._playerStatuses.isSlidable)
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Slide);
+                        StateMachine.SendEvent(StateEvent.Slide);
                     }
                     else
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Crouch);
+                        StateMachine.SendEvent(StateEvent.Crouch);
                     }
                 }
                 else if (Context._playerStatuses.moveInvoked)
                 {
                     if (Context._playerStatuses.sprintInvoked)
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Sprint);
+                        StateMachine.SendEvent(StateEvent.Sprint);
                     }
                     else
                     {
-                        StateMachine.SendEvent(MovementStateEvent.Walk);
+                        StateMachine.SendEvent(StateEvent.Walk);
                     }
                 }
                 else
                 {
-                    StateMachine.SendEvent(MovementStateEvent.Idle);
+                    StateMachine.SendEvent(StateEvent.Idle);
                 }
             }
         }

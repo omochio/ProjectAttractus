@@ -7,6 +7,8 @@ public class PlayerStatuses : MonoBehaviour
     public bool jumpInvoked = false;
     public bool crouchOrSlideInvoked = false;
     public bool attackInvoked = false;
+    public bool reloadInvoked = false;
+
     public bool isGrounded = true;
     public bool isSlidable = false;
     public bool isSlideCooling = false;
