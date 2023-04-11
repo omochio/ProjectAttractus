@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponHolder : MonoBehaviour
 {
     [SerializeField]
-    readonly List<Weapon> _weapons = new();
+    List<Weapon> _weapons = new();
     public List<Weapon> weapons
     { 
         get => _weapons; 

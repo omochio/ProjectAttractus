@@ -39,14 +39,14 @@ public class PlayerCombatStateMachine : MonoBehaviour
         _stateMachine.AddAnyTransition<PendingState>(StateEvent.Pending);
 
         // From DoNothing
-        _stateMachine.AddTransition<PendingState, Attack>(StateEvent.Attack);
-        _stateMachine.AddTransition<PendingState, Reload>(StateEvent.Reload);
+        _stateMachine.AddTransition<PendingState, AttackState>(StateEvent.Attack);
+        _stateMachine.AddTransition<PendingState, ReloadState>(StateEvent.Reload);
 
         // From Attack
-        _stateMachine.AddTransition<Attack, Reload>(StateEvent.Reload);
+        _stateMachine.AddTransition<AttackState, ReloadState>(StateEvent.Reload);
 
         // From Reload
-        _stateMachine.AddTransition<Reload, Attack>(StateEvent.Attack);
+        _stateMachine.AddTransition<ReloadState, AttackState>(StateEvent.Attack);
     }
 
     public void StateUpdate()
@@ -74,8 +74,14 @@ public class PlayerCombatStateMachine : MonoBehaviour
         }
     }
     
-    class Attack : PlayerCombatStateBase
+    class AttackState : PlayerCombatStateBase
     {
+        protected internal override void Enter()
+        {
+            base.Enter();
+            Context._weaponHolder.GetCurrentWeapon().InitElapsedTime();
+        }
+
         protected internal override void Update()
         {
             Context._weaponHolder.GetCurrentWeapon().Attack();
@@ -97,8 +103,14 @@ public class PlayerCombatStateMachine : MonoBehaviour
         }
     }
     
-    class Reload : PlayerCombatStateBase
+    class ReloadState : PlayerCombatStateBase
     {
+        protected internal override void Enter()
+        {
+            base.Enter();
+            Context._weaponHolder.GetCurrentWeapon().InitElapsedTime();
+        }
+
         protected internal override void Update()
         {
             Context._weaponHolder.GetCurrentWeapon().Reload();
