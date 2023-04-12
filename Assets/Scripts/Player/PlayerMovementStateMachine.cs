@@ -11,6 +11,35 @@ public class PlayerMovementStateMachine : MonoBehaviour
             Context._switchState = SwitchState;
         }
 
+        protected internal override void Update()
+        {
+            Context._animator.SetFloat(Context._animPrams.animParamIDs["moveX"], Context._playerInputHandler.smoothedMoveInput.x);
+            Context._animator.SetFloat(Context._animPrams.animParamIDs["moveY"], Context._playerInputHandler.smoothedMoveInput.y);
+
+            Context._playerMovementManager.ApplyGravity();
+
+            // TODO: Re consider conditions
+            Context._playerStatuses.isGrounded = (Mathf.Abs(Context._playerMovementManager.GetVelocity().y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
+
+            Vector2 horizontalVelocity = new(
+                Context._playerMovementManager.GetVelocity().x,
+                Context._playerMovementManager.GetVelocity().z);
+            if (horizontalVelocity.sqrMagnitude < Mathf.Pow(Context._playerParameters.minSlidableSpeed, 2f) || !Context._playerStatuses.isGrounded)
+            {
+                Context._playerStatuses.isSlidable = false;
+            }
+            else
+            {
+                Context._playerStatuses.isSlidable = true;
+            }
+
+            if (Context._playerStatuses.isSlideCooling && Context._playerStatuses.isGrounded)
+            {
+                Context._playerStatuses.slideElapsedTime += Time.fixedDeltaTime;
+            }
+            Context._playerStatuses.isSlideCooling = Context._playerStatuses.slideElapsedTime < Context._playerParameters.slideCoolTime;
+        }
+
         protected virtual void SwitchState() { }
     }
 
@@ -47,6 +76,13 @@ public class PlayerMovementStateMachine : MonoBehaviour
         TryGetComponent(out _collider);
         TryGetComponent(out _animator);
         _animPrams = new();
+
+
+        // Initialize support classes
+        _playerStatuses.slideElapsedTime = _playerParameters.slideCoolTime;
+        _playerMovementManager.gravityAcceleration = Vector3.down * _playerParameters.gravityAcceleration;
+        _playerMovementManager.lerpRate = _playerParameters.baseSpeedLerpRate;
+
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, StateEvent>(this);
 
@@ -103,51 +139,15 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<JumpState, CrouchState>(StateEvent.Crouch);
     }
 
-    void Start()
+    public void UpdateState()
     {
-        _playerStatuses.slideElapsedTime = _playerParameters.slideCoolTime;
-
-        _playerMovementManager.gravityAcceleration = Vector3.down * _playerParameters.gravityAcceleration;
-        _playerMovementManager.lerpRate = _playerParameters.baseSpeedLerpRate;
-
         _stateMachine.Update();
+        //Debug.Log(_stateMachine.CurrentStateName);
     }
 
-    void FixedUpdate()
+    public void SwitchState()
     {
-        _animator.SetFloat(_animPrams.animParamIDs["moveX"], _playerInputHandler.smoothedMoveInput.x);
-        _animator.SetFloat(_animPrams.animParamIDs["moveY"], _playerInputHandler.smoothedMoveInput.y);
-
-        _playerMovementManager.ApplyGravity();
-
-        // TODO: Re consider conditions
-        _playerStatuses.isGrounded = (Mathf.Abs(_playerMovementManager.GetVelocity().y) <= 0.1f) && Physics.Raycast(transform.position + Vector3.up * _collider.bounds.extents.y, Vector3.down, _collider.bounds.extents.y + 0.11f);
-
-        Vector2 horizontalVelocity = new(
-            _playerMovementManager.GetVelocity().x,
-            _playerMovementManager.GetVelocity().z);
-        if (horizontalVelocity.sqrMagnitude < Mathf.Pow(_playerParameters.minSlidableSpeed, 2f) || !_playerStatuses.isGrounded)
-        {
-            _playerStatuses.isSlidable = false;
-        }
-        else
-        {
-            _playerStatuses.isSlidable = true;
-        }
-
-        if (_playerStatuses.isSlideCooling && _playerStatuses.isGrounded)
-        {
-            _playerStatuses.slideElapsedTime += Time.fixedDeltaTime;
-        }
-        _playerStatuses.isSlideCooling = _playerStatuses.slideElapsedTime < _playerParameters.slideCoolTime;
-
-        _stateMachine.Update();
-
-        _playerMovementManager.ApplyVelocityChange();
         _switchState.Invoke();
-
-        Debug.Log(_stateMachine.CurrentStateName);
-
     }
 
 
@@ -206,6 +206,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.walkSpeed.x,
                 0f,
@@ -249,6 +250,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.sprintSpeed.x,
                 0f,
@@ -295,6 +297,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
                 Context._playerInputHandler.moveInput.x * Context._playerParameters.crouchSpeed.x,
                 0f,
@@ -364,6 +367,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            base.Update();
             Vector3 resistanceAcceleration = new(
                 -Context._playerMovementManager.GetVelocity().normalized.x * Context._playerParameters.slideResistanceAcceleration.x,
                 0f,
@@ -433,6 +437,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            base.Update();
             Vector3 input = new(
                 Context._playerInputHandler.moveInput.x,
                 0f,

@@ -9,6 +9,8 @@ public class PlayerStatuses : MonoBehaviour
     public bool attackInvoked = false;
     public bool reloadInvoked = false;
 
+    public bool isAlive = true;
+
     public bool isGrounded = true;
     public bool isSlidable = false;
     public bool isSlideCooling = false;

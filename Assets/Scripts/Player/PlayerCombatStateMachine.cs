@@ -30,6 +30,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
     void Awake()
     {
         TryGetComponent(out _weaponHolder);
+        TryGetComponent(out _playerStatuses);
 
         _stateMachine = new ImtStateMachine<PlayerCombatStateMachine, StateEvent>(this);
 
@@ -49,9 +50,10 @@ public class PlayerCombatStateMachine : MonoBehaviour
         _stateMachine.AddTransition<ReloadState, AttackState>(StateEvent.Attack);
     }
 
-    public void StateUpdate()
+    public void UpdateState()
     {
         _stateMachine.Update();
+        //Debug.Log(_stateMachine.CurrentStateName);
     }
 
     public void SwitchState()

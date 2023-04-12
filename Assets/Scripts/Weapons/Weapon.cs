@@ -1,28 +1,30 @@
+using System.Data.Common;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
 
     [SerializeField]
-    readonly float _damage;
+    float _damage;
     [SerializeField]
-    readonly float _fireRate;
+    float _fireRate;
     [SerializeField]
-    readonly int _magazineSize;
+    int _magazineSize;
     [SerializeField]
-    public readonly bool _isAutomatic;
+    bool _isAutomatic;
     [SerializeField]
-    readonly float _reloadTime;
+    float _reloadTime;
 
     float _elapsedTime;
     float _bulletsCount;
 
+    // TODO: Reconsider initialize purpose
+    [SerializeField]
     PlayerStatuses _playerStatuses;
     
 
     void Awake()
     {
-        TryGetComponent(out _playerStatuses);
         _bulletsCount = _magazineSize;
     }
 
@@ -43,6 +45,7 @@ public class Weapon : MonoBehaviour
         else
         {
             Ray ray = new(Camera.main.transform.position, Camera.main.transform.forward);
+            Debug.DrawRay(ray.origin, ray.direction, Color.red);
             if (_isAutomatic)
             {
                 if (_elapsedTime % (1f / _fireRate) == 0)
@@ -50,6 +53,7 @@ public class Weapon : MonoBehaviour
                     --_bulletsCount;
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
+                        Debug.Log(hit.collider.gameObject.name);
                         hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
                     }
                 }

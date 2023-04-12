@@ -83,6 +83,8 @@ GameObject:
   - component: {fileID: 1700962107}
   - component: {fileID: 1275648468}
   - component: {fileID: 41231631583632613}
+  - component: {fileID: 1700962117}
+  - component: {fileID: 1700962118}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -262,6 +264,7 @@ MonoBehaviour:
   crouchOrSlideInvoked: 0
   attackInvoked: 0
   reloadInvoked: 0
+  isAlive: 1
   isGrounded: 1
   isSlidable: 0
   isSlideCooling: 0
@@ -312,6 +315,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapons:
   - {fileID: 3228640717152409878}
+--- !u!114 &1700962117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254870419651997197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51cba4bff6d0564ea2410093607a789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1700962118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254870419651997197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383bf30fbb842444488e51d39c931288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &516130643708833605
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,6 +3041,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: PrototypeWeapon
       objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _fireRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _reloadTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _isAutomatic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _magazineSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _playerStatuses
+      value: 
+      objectReference: {fileID: 254870419651997198}
     - target: {fileID: 5251862552883890355, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
       propertyPath: m_RootOrder
