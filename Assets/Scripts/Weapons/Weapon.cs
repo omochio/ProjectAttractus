@@ -14,8 +14,11 @@ public class Weapon : MonoBehaviour
     bool _isAutomatic;
     [SerializeField]
     float _reloadTime;
+    [SerializeField]
+    GameObject _ball;
 
-    float _elapsedTime;
+    float _reloadElapsedTime;
+    float _shotElapsedTime;
     float _bulletsCount;
 
     // TODO: Reconsider initialize purpose
@@ -28,14 +31,15 @@ public class Weapon : MonoBehaviour
         _bulletsCount = _magazineSize;
     }
 
-    public void InitElapsedTime()
+    public void InitTimeCount()
     {
-        _elapsedTime = 0f;
+        _shotElapsedTime = (1f / _fireRate);
+        _reloadElapsedTime = 0f;
     }
 
     public void Attack()
     {
-        _elapsedTime += Time.fixedDeltaTime;
+        _shotElapsedTime += Time.fixedDeltaTime;
 
         if (_bulletsCount == 0)
         {
@@ -45,17 +49,20 @@ public class Weapon : MonoBehaviour
         else
         {
             Ray ray = new(Camera.main.transform.position, Camera.main.transform.forward);
-            Debug.DrawRay(ray.origin, ray.direction, Color.red);
+            //Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red);
+            Debug.Log(_bulletsCount);
             if (_isAutomatic)
             {
-                if (_elapsedTime % (1f / _fireRate) == 0)
+                if (_shotElapsedTime >= (1f / _fireRate))
                 {
+                    //Debug.Log("Shot");
                     --_bulletsCount;
+                    Instantiate(_ball, Camera.main.transform.position, Camera.main.transform.rotation);
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        Debug.Log(hit.collider.gameObject.name);
                         hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
                     }
+                    _shotElapsedTime = 0f;
                 }
             }
             else
@@ -72,12 +79,13 @@ public class Weapon : MonoBehaviour
 
     public void Reload() 
     {
-        _elapsedTime += Time.fixedDeltaTime;
+        _reloadElapsedTime += Time.fixedDeltaTime;
 
-        if (_elapsedTime >= _reloadTime)
+        if (_reloadElapsedTime >= _reloadTime)
         {
             _bulletsCount = _magazineSize;
             _playerStatuses.reloadInvoked = false;
+            _reloadElapsedTime = 0f;
         }
     }
 }

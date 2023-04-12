@@ -81,7 +81,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._weaponHolder.GetCurrentWeapon().InitElapsedTime();
+            Context._weaponHolder.GetCurrentWeapon().InitTimeCount();
         }
 
         protected internal override void Update()
@@ -110,7 +110,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._weaponHolder.GetCurrentWeapon().InitElapsedTime();
+            Context._weaponHolder.GetCurrentWeapon().InitTimeCount();
         }
 
         protected internal override void Update()
@@ -120,14 +120,18 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            if (Context._playerStatuses.reloadInvoked)
-            {
-                if (Context._playerStatuses.attackInvoked)
-                {
-                    stateMachine.SendEvent(StateEvent.Attack);
-                }
-            }
-            else
+            //if (Context._playerStatuses.reloadInvoked)
+            //{
+            //    if (Context._playerStatuses.attackInvoked)
+            //    {
+            //        stateMachine.SendEvent(StateEvent.Attack);
+            //    }
+            //}
+            //else
+            //{
+            //    StateMachine.SendEvent(StateEvent.Pending);
+            //}
+            if (!Context._playerStatuses.reloadInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Pending);
             }

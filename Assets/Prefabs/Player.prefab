@@ -3043,8 +3043,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
+      propertyPath: _ball
+      value: 
+      objectReference: {fileID: 8993783965038484455, guid: d71a3cb511bca664e8222322859904f3,
+        type: 3}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
       propertyPath: _fireRate
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
@@ -3059,7 +3065,7 @@ PrefabInstance:
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
       propertyPath: _magazineSize
-      value: 30
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
