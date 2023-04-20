@@ -4866,6 +4866,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1019080483, guid: 5092c91fbf2a8854aac753c0ed2268cd, type: 3}
+      propertyPath: m_Name
+      value: ShootablePos
+      objectReference: {fileID: 0}
     - target: {fileID: 254870419651997197, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}
       propertyPath: m_Name
@@ -4926,6 +4930,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3228640717152409878, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _projectileObj
+      value: 
+      objectReference: {fileID: 8993783965038484455, guid: d71a3cb511bca664e8222322859904f3,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5092c91fbf2a8854aac753c0ed2268cd, type: 3}
 --- !u!1 &1737270134

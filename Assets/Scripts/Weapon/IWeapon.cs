@@ -1,6 +1,7 @@
 
-public interface IShootabe
+public interface IWeapon
 {
     public void Shot();
     public void Reload();
+    public void InitTimeCount();
 }

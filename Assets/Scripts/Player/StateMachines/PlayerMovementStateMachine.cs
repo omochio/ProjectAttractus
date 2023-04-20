@@ -13,9 +13,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            Context._animator.SetFloat(Context._animPrams.animParamIDs["moveX"], Context._playerInputHandler.smoothedMoveInput.x);
-            Context._animator.SetFloat(Context._animPrams.animParamIDs["moveY"], Context._playerInputHandler.smoothedMoveInput.y);
-
             Context._playerMovementManager.ApplyGravity();
 
             // TODO: Re consider conditions
@@ -45,7 +42,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     enum StateEvent
     {
-        doNothing,
         Idle,
         Walk,
         Sprint,
@@ -63,9 +59,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
     PlayerInputHandler _playerInputHandler;
     PlayerMovementManager _playerMovementManager;
     Collider _collider;
-    Animator _animator;
-    PlayerAnimatorParameters _animPrams;
-
 
     void Awake()
     {
@@ -74,8 +67,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         TryGetComponent(out _playerMovementManager);
         TryGetComponent(out _playerInputHandler);
         TryGetComponent(out _collider);
-        TryGetComponent(out _animator);
-        _animPrams = new();
 
 
         // Initialize support classes
@@ -88,16 +79,16 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _stateMachine.SetStartState<IdleState>();
 
-        // Any states
-        _stateMachine.AddAnyTransition<DoNothingState>(StateEvent.doNothing);
+        //// Any states
+        //_stateMachine.AddAnyTransition<DoNothingState>(StateEvent.doNothing);
 
-        // From DoNothing
-        _stateMachine.AddTransition<DoNothingState, IdleState>(StateEvent.Idle);
-        _stateMachine.AddTransition<DoNothingState, WalkState>(StateEvent.Walk);
-        _stateMachine.AddTransition<DoNothingState, SprintState>(StateEvent.Sprint);
-        _stateMachine.AddTransition<DoNothingState, CrouchState>(StateEvent.Crouch);
-        _stateMachine.AddTransition<DoNothingState, SlideState>(StateEvent.Slide);
-        _stateMachine.AddTransition<DoNothingState, JumpState>(StateEvent.Jump);
+        //// From DoNothing
+        //_stateMachine.AddTransition<DoNothingState, IdleState>(StateEvent.Idle);
+        //_stateMachine.AddTransition<DoNothingState, WalkState>(StateEvent.Walk);
+        //_stateMachine.AddTransition<DoNothingState, SprintState>(StateEvent.Sprint);
+        //_stateMachine.AddTransition<DoNothingState, CrouchState>(StateEvent.Crouch);
+        //_stateMachine.AddTransition<DoNothingState, SlideState>(StateEvent.Slide);
+        //_stateMachine.AddTransition<DoNothingState, JumpState>(StateEvent.Jump);
 
         // From Idle
         _stateMachine.AddTransition<IdleState, WalkState>(StateEvent.Walk);
@@ -142,7 +133,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        //Debug.Log(_stateMachine.CurrentStateName);
     }
 
     public void SwitchState()
@@ -151,26 +141,19 @@ public class PlayerMovementStateMachine : MonoBehaviour
     }
 
 
-    class DoNothingState : PlayerMovementStateBase { }
+    //class DoNothingState : PlayerMovementStateBase { }
 
     class IdleState : PlayerMovementStateBase
     {
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["idle"], true);
         }
 
         protected internal override void Update()
         {
             Context._playerMovementManager.targetVelocity = Vector3.zero;
         }
-
-        protected internal override void Exit()
-        {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["idle"], false);
-        }
-
 
         protected override void SwitchState()
         {
@@ -201,7 +184,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["walk"], true);
         }
 
         protected internal override void Update()
@@ -212,11 +194,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.walkSpeed.y);
             Context._playerMovementManager.targetVelocity = targetVelocity;
-        }
-
-        protected internal override void Exit()
-        {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["walk"], false);
         }
 
         protected override void SwitchState()
@@ -245,7 +222,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["sprint"], true);
         }
 
         protected internal override void Update()
@@ -256,11 +232,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.sprintSpeed.y);
             Context._playerMovementManager.targetVelocity = targetVelocity;
-        }
-
-        protected internal override void Exit()
-        {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["sprint"], false);
         }
 
         protected override void SwitchState()
@@ -292,7 +263,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["crouch"], true);
         }
 
         protected internal override void Update()
@@ -303,11 +273,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 0f,
                 Context._playerInputHandler.moveInput.y * Context._playerParameters.crouchSpeed.y);
             Context._playerMovementManager.targetVelocity = targetVelocity;
-        }
-
-        protected internal override void Exit()
-        {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["crouch"], false);
         }
 
         protected override void SwitchState()
@@ -342,7 +307,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["slide"], true);
 
             float slideForce;
 
@@ -374,11 +338,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 -Context._playerMovementManager.GetVelocity().normalized.z * Context._playerParameters.slideResistanceAcceleration.y);
 
             Context._playerMovementManager.AddForce(resistanceAcceleration, ForceMode.Acceleration);
-        }
-
-        protected internal override void Exit()
-        {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["slide"], false);
         }
 
         protected override void SwitchState()
@@ -424,7 +383,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._animator.SetBool(Context._animPrams.animParamIDs["jump"], true);
 
             _initVelocity = new(
                 Context._playerMovementManager.GetVelocity().x, 
@@ -454,8 +412,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Exit()
         {
-            Context._animator.SetBool(Context._animPrams.animParamIDs["jump"], false);
-
             Context._playerStatuses.jumpInvoked = false;
         }
 

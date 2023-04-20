@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IShootabe
+public class Weapon : MonoBehaviour, IWeapon
 {
 
     [SerializeField]
@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour, IShootabe
     [SerializeField]
     float _reloadTime;
     [SerializeField]
-    GameObject _ball;
+    GameObject _projectileObj;
 
     float _reloadElapsedTime;
     float _shotElapsedTime;
@@ -48,15 +48,14 @@ public class Weapon : MonoBehaviour, IShootabe
         else
         {
             Ray ray = new(Camera.main.transform.position, Camera.main.transform.forward);
-            //Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red);
             Debug.Log(_bulletsCount);
             if (_isAutomatic)
             {
                 if (_shotElapsedTime >= (1f / _fireRate))
                 {
-                    //Debug.Log("Shot");
                     --_bulletsCount;
-                    Instantiate(_ball, Camera.main.transform.position, Camera.main.transform.rotation);
+                    // TODO: Temporary implementation
+                    Instantiate(_projectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
                         hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;

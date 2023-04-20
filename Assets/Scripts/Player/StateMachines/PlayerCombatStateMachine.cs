@@ -24,7 +24,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
     UnityAction _switchState;
 
-    ShootableHolder _weaponHolder;
+    WeaponHolder _weaponHolder;
     PlayerStatuses _playerStatuses;
 
     void Awake()
@@ -53,7 +53,6 @@ public class PlayerCombatStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        //Debug.Log(_stateMachine.CurrentStateName);
     }
 
     public void SwitchState()
@@ -120,17 +119,6 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            //if (Context._playerStatuses.reloadInvoked)
-            //{
-            //    if (Context._playerStatuses.attackInvoked)
-            //    {
-            //        stateMachine.SendEvent(StateEvent.Attack);
-            //    }
-            //}
-            //else
-            //{
-            //    StateMachine.SendEvent(StateEvent.Pending);
-            //}
             if (!Context._playerStatuses.reloadInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Pending);

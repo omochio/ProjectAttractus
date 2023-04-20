@@ -2,9 +2,9 @@ using UnityEngine;
 using IceMilkTea.Core;
 using UnityEngine.Events;
 
-public class PlayerLifeStateMachine : MonoBehaviour
+public class PlayerRootStateMachine : MonoBehaviour
 {
-    class PlayerLifeStateBase : ImtStateMachine<PlayerLifeStateMachine, StateEvent>.State
+    class PlayerRootStateBase : ImtStateMachine<PlayerRootStateMachine, StateEvent>.State
     {
         protected internal override void Enter()
         {
@@ -20,7 +20,7 @@ public class PlayerLifeStateMachine : MonoBehaviour
         Die
     }
 
-    ImtStateMachine<PlayerLifeStateMachine, StateEvent> _stateMachine;
+    ImtStateMachine<PlayerRootStateMachine, StateEvent> _stateMachine;
 
     UnityAction _switchState;
 
@@ -37,7 +37,7 @@ public class PlayerLifeStateMachine : MonoBehaviour
         TryGetComponent(out _playerCombatStateMachine);
 
 
-        _stateMachine = new ImtStateMachine<PlayerLifeStateMachine, StateEvent>(this);
+        _stateMachine = new ImtStateMachine<PlayerRootStateMachine, StateEvent>(this);
 
         _stateMachine.SetStartState<AliveState>();
 
@@ -58,12 +58,11 @@ public class PlayerLifeStateMachine : MonoBehaviour
     {
         _stateMachine.Update();
         _switchState.Invoke();
-        //Debug.Log(_stateMachine.CurrentStateName);
     }
 
-    class PendingState : PlayerLifeStateBase { }
+    class PendingState : PlayerRootStateBase { }
 
-    class AliveState : PlayerLifeStateBase
+    class AliveState : PlayerRootStateBase
     {
         protected internal override void Update()
         {
@@ -85,6 +84,6 @@ public class PlayerLifeStateMachine : MonoBehaviour
         }
     }
     
-    class DieState : PlayerLifeStateBase { }
+    class DieState : PlayerRootStateBase { }
 
 }

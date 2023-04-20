@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888de695685e0f54bb055eace7f39ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damage: 0
+  _fireRate: 10
+  _magazineSize: 200
+  _isAutomatic: 1
+  _reloadTime: 3
+  _ball: {fileID: 8993783965038484455, guid: d71a3cb511bca664e8222322859904f3, type: 3}
+  _playerStatuses: {fileID: 0}
