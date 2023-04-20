@@ -22,5 +22,4 @@ public class PlayerStatuses : MonoBehaviour
         get { return _slideElapsedTime; }
         set { _slideElapsedTime = value; }
     }
-
 }

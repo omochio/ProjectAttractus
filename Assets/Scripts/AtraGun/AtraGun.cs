@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AtraShooter : MonoBehaviour, IAtraShooter
+public class AtraGun : MonoBehaviour, IAtraGun
 {
     public void Shot()
     {
