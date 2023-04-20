@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DebugBall : MonoBehaviour
+public class PrototypeProjectile : MonoBehaviour
 {
     float _elapsedTime;
 

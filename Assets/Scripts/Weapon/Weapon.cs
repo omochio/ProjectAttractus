@@ -15,6 +15,8 @@ public class Weapon : MonoBehaviour, IWeapon
     float _reloadTime;
     [SerializeField]
     GameObject _projectileObj;
+    [SerializeField]
+    Transform _muzzlePos;
 
     float _reloadElapsedTime;
     float _shotElapsedTime;
@@ -43,7 +45,7 @@ public class Weapon : MonoBehaviour, IWeapon
         if (_bulletsCount == 0)
         {
             _playerStatuses.reloadInvoked = true;
-            _playerStatuses.attackInvoked = false;
+            //_playerStatuses.attackInvoked = false;
         }
         else
         {
@@ -55,7 +57,7 @@ public class Weapon : MonoBehaviour, IWeapon
                 {
                     --_bulletsCount;
                     // TODO: Temporary implementation
-                    Instantiate(_projectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
+                    Instantiate(_projectileObj, _muzzlePos.position, Camera.main.transform.rotation);
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
                         hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;

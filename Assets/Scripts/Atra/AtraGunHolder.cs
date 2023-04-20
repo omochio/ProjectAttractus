@@ -6,6 +6,7 @@ public class AtraGunHolder : MonoBehaviour
     [SerializeField]
     List<AtraGun> _atraGuns = new();
 
+
     int _currentAtraGunIndex = 0;
 
     void OnEnable()

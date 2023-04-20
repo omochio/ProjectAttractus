@@ -8,13 +8,13 @@ public class PlayerInputHandler : MonoBehaviour
     PlayerParameters _playerParams;
 
     Vector2 _moveInput = new();
-    public Vector2 moveInput
+    public Vector2 MoveInput
     {
         get { return _moveInput; }
     }
 
     Vector2 _smoothedMoveInput = new();
-    public Vector2 smoothedMoveInput
+    public Vector2 SmoothedMoveInput
     {
         get { return _smoothedMoveInput; }
     }
@@ -38,11 +38,14 @@ public class PlayerInputHandler : MonoBehaviour
         _input.actions["Attack"].performed += OnAttack;
         _input.actions["Attack"].canceled += OnAttack;
         _input.actions["Reload"].performed += OnReload;
+        _input.actions["SwitchToAtraGunHolder"].performed += OnSwitchToAtraGunHolder;
+        _input.actions["SwitchToWeaponHolder"].performed += OnSwitchToWeaponHolder;
+        _input.actions["EnableAtraForce"].performed += OnEnableAtraForce;
     }
 
     void Update()
     {
-        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, moveInput, _playerParams.baseSpeedLerpRate, Time.deltaTime);
+        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParams.BasicSpeedLerpRate, Time.deltaTime);
     }
 
     void OnMove(InputAction.CallbackContext context)
@@ -118,6 +121,45 @@ public class PlayerInputHandler : MonoBehaviour
         {
             case InputActionPhase.Performed:
                 _playerStatuses.reloadInvoked = true;
+                break;
+        }
+    }
+
+    void OnSwitchToAtraGunHolder(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                _playerStatuses.isWeaponHanded = false;
+                _playerStatuses.isAtraGunHanded = true;
+                break;
+        }
+    }
+
+    void OnSwitchToWeaponHolder(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                _playerStatuses.isWeaponHanded = true;
+                _playerStatuses.isAtraGunHanded = false;
+                break;
+        }
+    }
+
+    void OnEnableAtraForce(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                if (_playerStatuses.isAtraForceEnabled)
+                {
+                    _playerStatuses.isAtraForceEnabled = false;
+                }
+                else
+                {
+                    _playerStatuses.isAtraForceEnabled = true;
+                }
                 break;
         }
     }
