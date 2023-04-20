@@ -1,7 +1,6 @@
-using System.Data.Common;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IShootabe
 {
 
     [SerializeField]
@@ -37,7 +36,7 @@ public class Weapon : MonoBehaviour
         _reloadElapsedTime = 0f;
     }
 
-    public void Attack()
+    public void Shot()
     {
         _shotElapsedTime += Time.fixedDeltaTime;
 

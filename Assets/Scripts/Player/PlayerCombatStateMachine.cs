@@ -24,7 +24,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
     UnityAction _switchState;
 
-    WeaponHolder _weaponHolder;
+    ShootableHolder _weaponHolder;
     PlayerStatuses _playerStatuses;
 
     void Awake()
@@ -86,7 +86,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            Context._weaponHolder.GetCurrentWeapon().Attack();
+            Context._weaponHolder.GetCurrentWeapon().Shot();
         }
 
         protected override void SwitchState()
