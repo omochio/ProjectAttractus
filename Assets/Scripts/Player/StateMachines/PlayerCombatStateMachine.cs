@@ -60,16 +60,16 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
     public void UpdateState()
     {
-        if (_playerStatuses.isWeaponHanded)
-        {
-            _weaponHolderObj.SetActive(true);
-            _atraGunHolderObj.SetActive(false);
-        }
-        else if (_playerStatuses.isAtraGunHanded)
-        {
-            _weaponHolderObj.SetActive(false);
-            _atraGunHolderObj.SetActive(true);
-        }
+        //if (_playerStatuses.isWeaponHanded)
+        //{
+        //    _weaponHolderObj.SetActive(true);
+        //    _atraGunHolderObj.SetActive(false);
+        //}
+        //else if (_playerStatuses.isAtraGunHanded)
+        //{
+        //    _weaponHolderObj.SetActive(false);
+        //    _atraGunHolderObj.SetActive(true);
+        //}
 
         _stateMachine.Update();
     }

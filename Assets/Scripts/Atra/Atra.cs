@@ -1,12 +1,10 @@
+using Unity.Mathematics;
 using UnityEngine;
 
-public class Atra : MonoBehaviour
+public class Atra : MonoBehaviour, IAtra
 {
     [SerializeField]
     float _speed;
-
-    //[SerializeField]
-    //float _distance;
 
     [SerializeField]
     float _lifeTime;
@@ -15,6 +13,7 @@ public class Atra : MonoBehaviour
 
     float _elapsedTime;
     //Vector3 _beginPos;
+
 
     void Awake()
     {
@@ -37,6 +36,14 @@ public class Atra : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    public void AddAtraForce(Transform playerTransform, PlayerMovementManager playerMovementManager)
+    {
+        Vector3 dif = transform.position - playerTransform.position;
+        float distance = dif.magnitude;
+        Vector3 force = dif.normalized * (_rb.mass * playerMovementManager.GetMass() / distance);
+        playerMovementManager.AddForce(force, ForceMode.Force);
     }
 
     //void FixedUpdate()

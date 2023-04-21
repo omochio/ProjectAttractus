@@ -51,4 +51,8 @@ public class PlayerMovementManager : MonoBehaviour
         _rb.AddForce(val, mode);
     }
 
+    public float GetMass()
+    {
+        return _rb.mass;
+    }
 }

@@ -67,17 +67,17 @@ public class PlayerParameters : MonoBehaviour
     }
 
     [SerializeField]
-    Vector2 _jumpAdditionalSpeed;
-    public Vector2 JumpAdditionalSpeed
+    Vector2 _jumpHorizontalSpeed;
+    public Vector2 JumpHorizontalSpeed
     {
-        get { return _jumpAdditionalSpeed; }
+        get { return _jumpHorizontalSpeed; }
     }
 
     [SerializeField]
-    Vector2 _AtraForceSpeed;
-    public Vector2 AtraForceSpeed
+    Vector2 _AtraHorizontalSpeed;
+    public Vector2 AtraForceHorizontalSpeed
     {
-        get { return _AtraForceSpeed; }
+        get { return _AtraHorizontalSpeed; }
     }
 
     [SerializeField, Range(0f, float.MaxValue)]
@@ -93,4 +93,5 @@ public class PlayerParameters : MonoBehaviour
     {
         get { return _basicSpeedLerpRate; }
     }
+
 }

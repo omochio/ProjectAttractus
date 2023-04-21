@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class PlayerMovementStateMachine : MonoBehaviour
 {
-    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, StateEvent>.State 
+    class PlayerMovementStateBase : ImtStateMachine<PlayerMovementStateMachine, StateEvent>.State
     {
         protected internal override void Enter()
         {
@@ -61,6 +61,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
     PlayerInputHandler _playerInputHandler;
     PlayerMovementManager _playerMovementManager;
     Collider _collider;
+    [SerializeField]
+    AtraGunHolder _atraGunHolder;
+
 
     void Awake()
     {
@@ -81,12 +84,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         _stateMachine.SetStartState<IdleState>();
 
-        // Any states
-        _stateMachine.AddAnyTransition<AtraForceState>(StateEvent.AtraForce);
-        _stateMachine.AddAnyTransition<FallState>(StateEvent.Fall);
-
         // From AtraForce
         _stateMachine.AddTransition<AtraForceState, FallState>(StateEvent.Idle);
+        _stateMachine.AddTransition<AtraForceState, FallState>(StateEvent.Fall);
 
         // From Fall
         _stateMachine.AddTransition<FallState, IdleState>(StateEvent.Idle);
@@ -94,25 +94,32 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<FallState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<FallState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<FallState, SlideState>(StateEvent.Slide);
+        _stateMachine.AddTransition<FallState, AtraForceState>(StateEvent.AtraForce);
 
         // From Idle
         _stateMachine.AddTransition<IdleState, WalkState>(StateEvent.Walk);
         _stateMachine.AddTransition<IdleState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<IdleState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<IdleState, JumpState>(StateEvent.Jump);
+        _stateMachine.AddTransition<IdleState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<IdleState, FallState>(StateEvent.Fall);
 
         // From Walk
         _stateMachine.AddTransition<WalkState, IdleState>(StateEvent.Idle);
         _stateMachine.AddTransition<WalkState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<WalkState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<WalkState, JumpState>(StateEvent.Jump);
-        
+        _stateMachine.AddTransition<WalkState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<WalkState, FallState>(StateEvent.Fall);
+
         // From Sprint
         _stateMachine.AddTransition<SprintState, IdleState>(StateEvent.Idle);
         _stateMachine.AddTransition<SprintState, WalkState>(StateEvent.Walk);
         _stateMachine.AddTransition<SprintState, SlideState>(StateEvent.Slide);
         _stateMachine.AddTransition<SprintState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<SprintState, JumpState>(StateEvent.Jump);
+        _stateMachine.AddTransition<SprintState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<SprintState, FallState>(StateEvent.Fall);
 
         // From Slide
         _stateMachine.AddTransition<SlideState, IdleState>(StateEvent.Idle);
@@ -120,12 +127,16 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<SlideState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<SlideState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<SlideState, JumpState>(StateEvent.Jump);
-        
+        _stateMachine.AddTransition<SlideState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<SlideState, FallState>(StateEvent.Fall);
+
         // From Crouch
         _stateMachine.AddTransition<CrouchState, IdleState>(StateEvent.Idle);
         _stateMachine.AddTransition<CrouchState, WalkState>(StateEvent.Walk);
         _stateMachine.AddTransition<CrouchState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<CrouchState, JumpState>(StateEvent.Jump);
+        _stateMachine.AddTransition<CrouchState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<CrouchState, FallState>(StateEvent.Fall);
 
         // From Jump
         _stateMachine.AddTransition<JumpState, IdleState>(StateEvent.Idle);
@@ -133,6 +144,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<JumpState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<JumpState, SlideState>(StateEvent.Slide);
         _stateMachine.AddTransition<JumpState, CrouchState>(StateEvent.Crouch);
+        _stateMachine.AddTransition<JumpState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<JumpState, FallState>(StateEvent.Fall);
     }
 
     public void UpdateState()
@@ -393,16 +406,16 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class JumpState : PlayerMovementStateBase
     {
-        Vector3 _initVelocity;
+        //Vector3 _initVelocity;
 
         protected internal override void Enter()
         {
             base.Enter();
 
-            _initVelocity = new(
-                Context._playerMovementManager.GetVelocity().x, 
-                0f, 
-                Context._playerMovementManager.GetVelocity().z);
+            //_initVelocity = new(
+            //    Context._playerMovementManager.GetVelocity().x, 
+            //    0f, 
+            //    Context._playerMovementManager.GetVelocity().z);
             Vector3 force = Context.transform.rotation * Vector3.up * Context._playerParameters.JumpForce;
             Context._playerMovementManager.AddForce(force, ForceMode.Impulse);
             Context._playerStatuses.isGrounded = false;
@@ -417,9 +430,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 Context._playerInputHandler.MoveInput.y);
 
             Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
-                input.x * Context._playerParameters.JumpAdditionalSpeed.x,
+                input.x * Context._playerParameters.JumpHorizontalSpeed.x,
                 0f,
-                input.z * Context._playerParameters.JumpAdditionalSpeed.y) * (Mathf.Acos(Vector3.Dot(_initVelocity.normalized, Context.transform.rotation * input.normalized)) / Mathf.PI)) + Context._playerMovementManager.GetVelocity();
+                input.z * Context._playerParameters.JumpHorizontalSpeed.y)) + Context._playerMovementManager.GetVelocity();
 
             Context._playerMovementManager.TargetVelocity = targetVelocity;
         }
@@ -466,7 +479,33 @@ public class PlayerMovementStateMachine : MonoBehaviour
     
     class AtraForceState : PlayerMovementStateBase
     {
+        //protected internal override void Enter()
+        //{
+        //    base.Enter();
+        //}
 
+        protected internal override void Update()
+        {
+            //Debug.Log("AtraStae");
+            base.Update();
+
+            // Apply Atra force
+            Context._atraGunHolder.GetCurrentAtraGun().AddAtraForce(Context.transform, Context._playerMovementManager);
+
+            // Horizontal move
+            Vector3 input = new(
+                Context._playerInputHandler.MoveInput.x,
+                0f,
+                Context._playerInputHandler.MoveInput.y);
+
+            Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
+                input.x * Context._playerParameters.AtraForceHorizontalSpeed.x,
+                0f,
+                input.z * Context._playerParameters.AtraForceHorizontalSpeed.y)) + Context._playerMovementManager.GetVelocity();
+
+            Context._playerMovementManager.TargetVelocity = targetVelocity;
+
+        }
 
         protected override void SwitchState()
         {
@@ -479,6 +518,17 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class FallState : PlayerMovementStateBase
     {
+        protected internal override void Enter()
+        {
+            base.Enter();
+        }
+
+        protected internal override void Update()
+        {
+            base.Update();
+            Debug.Log(Context._playerMovementManager.GetVelocity());
+        }
+
         protected override void SwitchState()
         {
             if (Context._playerStatuses.isGrounded)

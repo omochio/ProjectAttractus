@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4953,6 +4953,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997199, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _atraGunHolder
+      value: 
+      objectReference: {fileID: 1942599936}
+    - target: {fileID: 254870419651997299, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: m_Mass
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997299, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997299, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _jumpForce
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}
       propertyPath: _slideForce
@@ -4967,6 +4992,36 @@ PrefabInstance:
         type: 3}
       propertyPath: _AtraForceSpeed.y
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _basicSpeedLerpRate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _gravityAcceleration
+      value: 9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _AtraHorizontalSpeed.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _AtraHorizontalSpeed.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _jumpHorizontalSpeed.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _jumpHorizontalSpeed.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 254870419651997301, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}

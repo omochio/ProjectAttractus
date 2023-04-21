@@ -9,17 +9,16 @@ public class AtraGun : MonoBehaviour, IAtraGun
     PlayerStatuses _playerStatuses;
 
     [SerializeField]
-    PlayerMovementManager _playerMovementManager;
-
-    [SerializeField]
     GameObject _atraPrefab;
 
     GameObject _atraObj;
+    IAtra _atra;
 
     public void Shot()
     {
         if (!_atraObj)
         {
+            // TODO: Rotation is not properly
             _atraObj = Instantiate(_atraPrefab, _muzzlePos.position, Camera.main.transform.rotation);
         }
         _playerStatuses.isAtraGunHanded = false;
@@ -27,11 +26,26 @@ public class AtraGun : MonoBehaviour, IAtraGun
         _playerStatuses.attackInvoked = false;
     }
 
-    public void AddAtraForce(Transform playerTransform)
+    public void AddAtraForce(Transform playerTransform, PlayerMovementManager playerMovementManager)
     {
+        //Debug.Log("Atra");
         if (_atraObj)
         {
-            Quaternion.LookRotation
+            _atraObj.TryGetComponent(out _atra);
+            _atra.AddAtraForce(playerTransform, playerMovementManager);
+        }
+        else
+        {
+            _playerStatuses.isAtraForceEnabled = false;
         }
     }
+
+    //public void EnableAtraForce(Transform playerTransform)
+    //{
+    //    if (!_atraObj)
+    //    {
+    //        _atraObj.TryGetComponent(out _atra);
+    //        _atra.EnableAtraForce(playerTransform);
+    //    }
+    //}
 }

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public interface IAtraGun
+public interface IAtra
 {
-    public void Shot();
     public void AddAtraForce(Transform playerTransform, PlayerMovementManager playerMovementManager);
 }
