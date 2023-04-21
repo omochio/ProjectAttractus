@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Atra : MonoBehaviour, IAtra
@@ -38,13 +37,17 @@ public class Atra : MonoBehaviour, IAtra
 
     }
 
-    public void AddAtraForce(Transform playerTransform, PlayerMovementManager playerMovementManager)
+    public void AddAtraForce(Transform playerTransform, Rigidbody playerRb)
     {
         Vector3 dif = transform.position - playerTransform.position;
         float distance = dif.magnitude;
-        Vector3 force = dif.normalized * (_rb.mass * playerMovementManager.GetMass() / distance);
-        playerMovementManager.AddForce(force, ForceMode.Force);
+        if (!(distance < 1f))
+        {
+            Vector3 force = dif.normalized * (_rb.mass * playerRb.mass / distance);
+            playerRb.AddForce(force, ForceMode.Force);
+        }
     }
+
 
     //void FixedUpdate()
     //{

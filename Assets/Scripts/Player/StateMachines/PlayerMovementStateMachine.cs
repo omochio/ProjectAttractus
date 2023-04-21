@@ -13,14 +13,14 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            Context._playerMovementManager.ApplyGravity();
+            //Context._playerMovementManager.ApplyGravity();
 
             // TODO: Re consider conditions
-            Context._playerStatuses.isGrounded = (Mathf.Abs(Context._playerMovementManager.GetVelocity().y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
+            Context._playerStatuses.isGrounded = (Mathf.Abs(Context._rb.velocity.y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
 
             Vector2 horizontalVelocity = new(
-                Context._playerMovementManager.GetVelocity().x,
-                Context._playerMovementManager.GetVelocity().z);
+                Context._rb.velocity.x,
+                Context._rb.velocity.z);
             if (horizontalVelocity.sqrMagnitude < Mathf.Pow(Context._playerParameters.MinSlidableSpeed, 2f) || !Context._playerStatuses.isGrounded)
             {
                 Context._playerStatuses.isSlidable = false;
@@ -59,25 +59,27 @@ public class PlayerMovementStateMachine : MonoBehaviour
     PlayerStatuses _playerStatuses;
     PlayerParameters _playerParameters;
     PlayerInputHandler _playerInputHandler;
-    PlayerMovementManager _playerMovementManager;
+    //PlayerMovementManager _playerMovementManager;
     Collider _collider;
+    Rigidbody _rb;
     [SerializeField]
     AtraGunHolder _atraGunHolder;
+
 
 
     void Awake()
     {
         TryGetComponent(out _playerStatuses);
         TryGetComponent(out _playerParameters);
-        TryGetComponent(out _playerMovementManager);
         TryGetComponent(out _playerInputHandler);
         TryGetComponent(out _collider);
+        TryGetComponent(out _rb);
 
 
         // Initialize support classes
         _playerStatuses.SlideElapsedTime = _playerParameters.SlideCoolTime;
-        _playerMovementManager.GravityAcceleration = Vector3.down * _playerParameters.GravityAcceleration;
-        _playerMovementManager.LerpRate = _playerParameters.BasicSpeedLerpRate;
+        //_playerMovementManager.GravityAcceleration = Vector3.down * _playerParameters.GravityAcceleration;
+        //_playerMovementManager.LerpRate = _playerParameters.BasicSpeedLerpRate;
 
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, StateEvent>(this);
@@ -179,7 +181,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            Context._playerMovementManager.TargetVelocity = Vector3.zero;
+            //Context._playerMovementManager.TargetVelocity = Vector3.zero;
+            Context._rb.velocity = Vector3.zero;
         }
 
         protected override void SwitchState()
@@ -217,10 +220,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
         {
             base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.MoveInput.x * Context._playerParameters.WalkSpeed.x,
+                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.WalkSpeed.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y * Context._playerParameters.WalkSpeed.y);
-            Context._playerMovementManager.TargetVelocity = targetVelocity;
+                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.WalkSpeed.y);
+            Context._rb.velocity = targetVelocity;
         }
 
         protected override void SwitchState()
@@ -255,10 +258,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
         {
             base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.MoveInput.x * Context._playerParameters.SprintSpeed.x,
+                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.SprintSpeed.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y * Context._playerParameters.SprintSpeed.y);
-            Context._playerMovementManager.TargetVelocity = targetVelocity;
+                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.SprintSpeed.y);
+            Context._rb.velocity = targetVelocity;
         }
 
         protected override void SwitchState()
@@ -296,10 +299,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
         {
             base.Update();
             Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.MoveInput.x * Context._playerParameters.CrouchSpeed.x,
+                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.CrouchSpeed.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y * Context._playerParameters.CrouchSpeed.y);
-            Context._playerMovementManager.TargetVelocity = targetVelocity;
+                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.CrouchSpeed.y);
+            Context._rb.velocity = targetVelocity;
         }
 
         protected override void SwitchState()
@@ -347,11 +350,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
             }
 
             Vector3 force = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.MoveInput.x,
+                Context._playerInputHandler.SmoothedMoveInput.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y) * slideForce;
+                Context._playerInputHandler.SmoothedMoveInput.y) * slideForce;
 
-            Context._playerMovementManager.AddForce(force, ForceMode.Impulse);
+            Context._rb.AddForce(force, ForceMode.Impulse);
 
             Context._playerStatuses.SlideElapsedTime = 0f;
         }
@@ -361,10 +364,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
             base.Update();
             // TODO: Resistance acceleration is not properly applied
             Vector3 resistanceAcceleration = new(
-                -Context._playerMovementManager.GetVelocity().normalized.x * Context._playerParameters.SlideResistanceAcceleration.x,
+                -Context._rb.velocity.normalized.x * Context._playerParameters.SlideResistanceAcceleration.x,
                 0f,
-                -Context._playerMovementManager.GetVelocity().normalized.z * Context._playerParameters.SlideResistanceAcceleration.y);
-            Context._playerMovementManager.AddForce(resistanceAcceleration, ForceMode.Acceleration);
+                -Context._rb.velocity.normalized.z * Context._playerParameters.SlideResistanceAcceleration.y);
+            Context._rb.AddForce(resistanceAcceleration, ForceMode.Acceleration);
             //Debug.Log(Context._playerMovementManager.GetVelocity().normalized);
         }
 
@@ -413,11 +416,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
             base.Enter();
 
             //_initVelocity = new(
-            //    Context._playerMovementManager.GetVelocity().x, 
-            //    0f, 
-            //    Context._playerMovementManager.GetVelocity().z);
+            //    Context._rb.velocity.x,
+            //    0f,
+            //    Context._rb.velocity.z);
             Vector3 force = Context.transform.rotation * Vector3.up * Context._playerParameters.JumpForce;
-            Context._playerMovementManager.AddForce(force, ForceMode.Impulse);
+            Context._rb.AddForce(force, ForceMode.Impulse);
             Context._playerStatuses.isGrounded = false;
         }
 
@@ -425,16 +428,16 @@ public class PlayerMovementStateMachine : MonoBehaviour
         {
             base.Update();
             Vector3 input = new(
-                Context._playerInputHandler.MoveInput.x,
+                Context._playerInputHandler.SmoothedMoveInput.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y);
+                Context._playerInputHandler.SmoothedMoveInput.y);
 
-            Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
-                input.x * Context._playerParameters.JumpHorizontalSpeed.x,
+            Vector3 targetVelocity = Context.transform.rotation * new Vector3(
+                input.x * Context._playerParameters.JumpHorizontalAcceleration.x,
                 0f,
-                input.z * Context._playerParameters.JumpHorizontalSpeed.y)) + Context._playerMovementManager.GetVelocity();
+                input.z * Context._playerParameters.JumpHorizontalAcceleration.y);
 
-            Context._playerMovementManager.TargetVelocity = targetVelocity;
+            Context._rb.velocity += targetVelocity;
         }
 
 
@@ -490,20 +493,20 @@ public class PlayerMovementStateMachine : MonoBehaviour
             base.Update();
 
             // Apply Atra force
-            Context._atraGunHolder.GetCurrentAtraGun().AddAtraForce(Context.transform, Context._playerMovementManager);
+            Context._atraGunHolder.GetCurrentAtraGun().AddAtraForce(Context.transform, Context._rb);
 
             // Horizontal move
             Vector3 input = new(
-                Context._playerInputHandler.MoveInput.x,
+                Context._playerInputHandler.SmoothedMoveInput.x,
                 0f,
-                Context._playerInputHandler.MoveInput.y);
+                Context._playerInputHandler.SmoothedMoveInput.y);
 
             Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
-                input.x * Context._playerParameters.AtraForceHorizontalSpeed.x,
+                input.x * Context._playerParameters.AtraForceHorizontalAcceleration.x,
                 0f,
-                input.z * Context._playerParameters.AtraForceHorizontalSpeed.y)) + Context._playerMovementManager.GetVelocity();
+                input.z * Context._playerParameters.AtraForceHorizontalAcceleration.y));
 
-            Context._playerMovementManager.TargetVelocity = targetVelocity;
+            Context._rb.velocity += targetVelocity;
 
         }
 
@@ -525,8 +528,22 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
+            //Debug.Log("AtraStae");
             base.Update();
-            Debug.Log(Context._playerMovementManager.GetVelocity());
+
+            // Horizontal move
+            Vector3 input = new(
+                Context._playerInputHandler.SmoothedMoveInput.x,
+                0f,
+                Context._playerInputHandler.SmoothedMoveInput.y);
+
+            Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
+                input.x * Context._playerParameters.FallHorizontalAcceleration.x,
+                0f,
+                input.z * Context._playerParameters.FallHorizontalAcceleration.y));
+
+            Context._rb.velocity += targetVelocity;
+
         }
 
         protected override void SwitchState()

@@ -57,8 +57,8 @@ public class Weapon : MonoBehaviour, IWeapon
                 {
                     --_bulletsCount;
                     // TODO: Temporary implementation
-                    Instantiate(_projectileObj, _muzzlePos.position, Camera.main.transform.rotation);
-                    if (Physics.Raycast(ray, out RaycastHit hit))
+                    Instantiate(_projectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
+                    if (Physics.Raycast(ray, out RaycastHit hit) && !hit.collider.CompareTag("Floor"))
                     {
                         hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
                     }

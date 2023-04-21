@@ -67,17 +67,24 @@ public class PlayerParameters : MonoBehaviour
     }
 
     [SerializeField]
-    Vector2 _jumpHorizontalSpeed;
-    public Vector2 JumpHorizontalSpeed
+    Vector2 _jumpHorizontalAcceleration;
+    public Vector2 JumpHorizontalAcceleration
     {
-        get { return _jumpHorizontalSpeed; }
+        get { return _jumpHorizontalAcceleration; }
     }
 
     [SerializeField]
-    Vector2 _AtraHorizontalSpeed;
-    public Vector2 AtraForceHorizontalSpeed
+    Vector2 _atraForceHorizontalAcceleration;
+    public Vector2 AtraForceHorizontalAcceleration
     {
-        get { return _AtraHorizontalSpeed; }
+        get { return _atraForceHorizontalAcceleration; }
+    }
+
+    [SerializeField]
+    Vector2 _fallHorizontalAcceleration;
+    public Vector2 FallHorizontalAcceleration
+    {
+        get { return _fallHorizontalAcceleration; }
     }
 
     [SerializeField, Range(0f, float.MaxValue)]

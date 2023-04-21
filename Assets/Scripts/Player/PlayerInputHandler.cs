@@ -13,11 +13,11 @@ public class PlayerInputHandler : MonoBehaviour
         get { return _moveInput; }
     }
 
-    //Vector2 _smoothedMoveInput = new();
-    //public Vector2 SmoothedMoveInput
-    //{
-    //    get { return _smoothedMoveInput; }
-    //}
+    Vector2 _smoothedMoveInput = new();
+    public Vector2 SmoothedMoveInput
+    {
+        get { return _smoothedMoveInput; }
+    }
 
     void Awake()
     {
@@ -43,10 +43,10 @@ public class PlayerInputHandler : MonoBehaviour
         _input.actions["EnableAtraForce"].performed += OnEnableAtraForce;
     }
 
-    //void Update()
-    //{
-    //    _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParams.BasicSpeedLerpRate, Time.deltaTime);
-    //}
+    void Update()
+    {
+        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParams.BasicSpeedLerpRate, Time.deltaTime);
+    }
 
     void OnMove(InputAction.CallbackContext context)
     {
