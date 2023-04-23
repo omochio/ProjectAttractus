@@ -39,13 +39,4 @@ public class AtraGun : MonoBehaviour, IAtraGun
             _playerStatuses.isAtraForceEnabled = false;
         }
     }
-
-    //public void EnableAtraForce(Transform playerTransform)
-    //{
-    //    if (!_atraObj)
-    //    {
-    //        _atraObj.TryGetComponent(out _atra);
-    //        _atra.EnableAtraForce(playerTransform);
-    //    }
-    //}
 }

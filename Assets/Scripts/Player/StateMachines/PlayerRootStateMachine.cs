@@ -25,14 +25,12 @@ public class PlayerRootStateMachine : MonoBehaviour
     UnityAction _switchState;
 
     PlayerStatuses _playerStatuses;
-    //PlayerMovementManager _playerMovementManager;
     PlayerMovementStateMachine _playerMovementStateMachine;
     PlayerCombatStateMachine _playerCombatStateMachine;
 
     void Awake()
     {
         TryGetComponent(out _playerStatuses);
-        //TryGetComponent(out _playerMovementManager);
         TryGetComponent(out _playerMovementStateMachine);
         TryGetComponent(out _playerCombatStateMachine);
 
@@ -68,8 +66,6 @@ public class PlayerRootStateMachine : MonoBehaviour
         {
             Context._playerMovementStateMachine.UpdateState();
             Context._playerCombatStateMachine.UpdateState();
-
-            //Context._playerMovementManager.ApplyVelocityChange();
 
             Context._playerMovementStateMachine.SwitchState();   
             Context._playerCombatStateMachine.SwitchState();
