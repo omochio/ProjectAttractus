@@ -13,8 +13,6 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            //Context._playerMovementManager.ApplyGravity();
-
             // TODO: Re consider conditions
             Context._playerStatuses.isGrounded = (Mathf.Abs(Context._rb.velocity.y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
 
@@ -58,8 +56,7 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     PlayerStatuses _playerStatuses;
     PlayerParameters _playerParameters;
-    PlayerInputHandler _playerInputHandler;
-    //PlayerMovementManager _playerMovementManager;
+    GamePlayInputManager _gamePlayInputManager;
     Collider _collider;
     Rigidbody _rb;
     [SerializeField]
@@ -71,16 +68,12 @@ public class PlayerMovementStateMachine : MonoBehaviour
     {
         TryGetComponent(out _playerStatuses);
         TryGetComponent(out _playerParameters);
-        TryGetComponent(out _playerInputHandler);
+        TryGetComponent(out _gamePlayInputManager);
         TryGetComponent(out _collider);
         TryGetComponent(out _rb);
 
-
         // Initialize support classes
         _playerStatuses.SlideElapsedTime = _playerParameters.SlideCoolTime;
-        //_playerMovementManager.GravityAcceleration = Vector3.down * _playerParameters.GravityAcceleration;
-        //_playerMovementManager.LerpRate = _playerParameters.BasicSpeedLerpRate;
-
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, StateEvent>(this);
 
@@ -153,7 +146,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        Debug.Log(_stateMachine.CurrentStateName);
+        //Debug.Log(_stateMachine.CurrentStateName);
+        //Debug.Log(_playerStatuses.isSlidable);
     }
 
     public void SwitchState()
@@ -170,18 +164,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
     }
 
 
-    //class DoNothingState : PlayerMovementStateBase { }
-
     class IdleState : PlayerMovementStateBase
     {
-        protected internal override void Enter()
-        {
-            base.Enter();
-        }
-
         protected internal override void Update()
         {
-            //Context._playerMovementManager.TargetVelocity = Vector3.zero;
             Context._rb.velocity = Vector3.zero;
         }
 
@@ -219,10 +205,8 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             base.Update();
-            Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.WalkSpeed.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.WalkSpeed.y);
+            var targetVelocity = Context.transform.rotation 
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.WalkSpeed);
             Context._rb.velocity = targetVelocity;
         }
 
@@ -249,18 +233,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class SprintState : PlayerMovementStateBase
     {
-        protected internal override void Enter()
-        {
-            base.Enter();
-        }
-
         protected internal override void Update()
         {
             base.Update();
-            Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.SprintSpeed.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.SprintSpeed.y);
+            Vector3 targetVelocity = Context.transform.rotation
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.SprintSpeed);
             Context._rb.velocity = targetVelocity;
         }
 
@@ -290,18 +267,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class CrouchState : PlayerMovementStateBase
     {
-        protected internal override void Enter()
-        {
-            base.Enter();
-        }
-
         protected internal override void Update()
         {
             base.Update();
-            Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.SmoothedMoveInput.x * Context._playerParameters.CrouchSpeed.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y * Context._playerParameters.CrouchSpeed.y);
+            Vector3 targetVelocity = Context.transform.rotation
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.CrouchSpeed);
             Context._rb.velocity = targetVelocity;
         }
 
@@ -349,10 +319,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
                 slideForce = Context._playerParameters.SlideForce;
             }
 
-            Vector3 force = Context.transform.rotation * new Vector3(
-                Context._playerInputHandler.SmoothedMoveInput.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y) * slideForce;
+            Vector3 force = Context.transform.rotation
+                * Context._gamePlayInputManager.SmoothedMoveInput
+                * slideForce;
 
             Context._rb.AddForce(force, ForceMode.Impulse);
 
@@ -362,13 +331,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             base.Update();
-            // TODO: Resistance acceleration is not properly applied
-            Vector3 resistanceAcceleration = new(
-                -Context._rb.velocity.normalized.x * Context._playerParameters.SlideResistanceAcceleration.x,
-                0f,
-                -Context._rb.velocity.normalized.z * Context._playerParameters.SlideResistanceAcceleration.y);
+            Vector3 resistanceAcceleration = Vector3.Scale(Context._rb.velocity.normalized, new Vector3(-1f, 0f, -1f));
+            resistanceAcceleration = Vector3.Scale(resistanceAcceleration, Context._playerParameters.SlideResistanceAcceleration);
             Context._rb.AddForce(resistanceAcceleration, ForceMode.Acceleration);
-            //Debug.Log(Context._playerMovementManager.GetVelocity().normalized);
         }
 
         protected override void SwitchState()
@@ -409,16 +374,10 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
     class JumpState : PlayerMovementStateBase
     {
-        //Vector3 _initVelocity;
-
         protected internal override void Enter()
         {
             base.Enter();
 
-            //_initVelocity = new(
-            //    Context._rb.velocity.x,
-            //    0f,
-            //    Context._rb.velocity.z);
             Vector3 force = Context.transform.rotation * Vector3.up * Context._playerParameters.JumpForce;
             Context._rb.AddForce(force, ForceMode.Impulse);
             Context._playerStatuses.isGrounded = false;
@@ -427,16 +386,9 @@ public class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             base.Update();
-            Vector3 input = new(
-                Context._playerInputHandler.SmoothedMoveInput.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y);
 
-            Vector3 targetVelocity = Context.transform.rotation * new Vector3(
-                input.x * Context._playerParameters.JumpHorizontalAcceleration.x,
-                0f,
-                input.z * Context._playerParameters.JumpHorizontalAcceleration.y);
-
+            Vector3 targetVelocity = Context.transform.rotation
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.JumpHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
         }
 
@@ -482,30 +434,16 @@ public class PlayerMovementStateMachine : MonoBehaviour
     
     class AtraForceState : PlayerMovementStateBase
     {
-        //protected internal override void Enter()
-        //{
-        //    base.Enter();
-        //}
-
         protected internal override void Update()
         {
-            //Debug.Log("AtraStae");
             base.Update();
 
             // Apply Atra force
             Context._atraGunHolder.GetCurrentAtraGun().AddAtraForce(Context.transform, Context._rb);
 
             // Horizontal move
-            Vector3 input = new(
-                Context._playerInputHandler.SmoothedMoveInput.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y);
-
-            Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
-                input.x * Context._playerParameters.AtraForceHorizontalAcceleration.x,
-                0f,
-                input.z * Context._playerParameters.AtraForceHorizontalAcceleration.y));
-
+            Vector3 targetVelocity = Context.transform.rotation
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.AtraForceHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
 
         }
@@ -528,20 +466,11 @@ public class PlayerMovementStateMachine : MonoBehaviour
 
         protected internal override void Update()
         {
-            //Debug.Log("AtraStae");
             base.Update();
 
             // Horizontal move
-            Vector3 input = new(
-                Context._playerInputHandler.SmoothedMoveInput.x,
-                0f,
-                Context._playerInputHandler.SmoothedMoveInput.y);
-
-            Vector3 targetVelocity = Context.transform.rotation * (new Vector3(
-                input.x * Context._playerParameters.FallHorizontalAcceleration.x,
-                0f,
-                input.z * Context._playerParameters.FallHorizontalAcceleration.y));
-
+            Vector3 targetVelocity = Context.transform.rotation
+                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.FallHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
 
         }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4895,6 +4895,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _smallSlideForce
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _basicSpeedLerpRate
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _jumpHorizontalAcceleration.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _jumpHorizontalAcceleration.y
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 254870419651997301, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}

@@ -4,23 +4,23 @@ public class PlayerParameters : MonoBehaviour
 {
     [SerializeField]
     Vector2 _walkSpeed;
-    public Vector2 WalkSpeed
+    public Vector3 WalkSpeed
     {
-        get { return _walkSpeed; }
+        get { return new Vector3(_walkSpeed.x, 0f, _walkSpeed.y); }
     }
 
     [SerializeField]
     Vector2 _sprintSpeed;
-    public Vector2 SprintSpeed
+    public Vector3 SprintSpeed
     {
-        get { return _sprintSpeed; }
+        get { return new Vector3(_sprintSpeed.x, 0f, _sprintSpeed.y); }
     }
 
     [SerializeField]
     Vector2 _crouchSpeed;
-    public Vector2 CrouchSpeed
+    public Vector3 CrouchSpeed
     {
-        get { return _crouchSpeed; }
+        get { return new Vector3(_crouchSpeed.x, 0f, _crouchSpeed.y); }
     }
 
     [SerializeField, Range(0f, float.MaxValue)]
@@ -39,9 +39,9 @@ public class PlayerParameters : MonoBehaviour
 
     [SerializeField]
     Vector2 _slideResistanceAcceleration;
-    public Vector2 SlideResistanceAcceleration
+    public Vector3 SlideResistanceAcceleration
     {
-        get { return _slideResistanceAcceleration; }
+        get { return new Vector3(_slideResistanceAcceleration.x, 0f, _slideResistanceAcceleration.y); }
     }
 
     [SerializeField, Range(0f, float.MaxValue)]
@@ -68,23 +68,23 @@ public class PlayerParameters : MonoBehaviour
 
     [SerializeField]
     Vector2 _jumpHorizontalAcceleration;
-    public Vector2 JumpHorizontalAcceleration
+    public Vector3 JumpHorizontalAcceleration
     {
-        get { return _jumpHorizontalAcceleration; }
+        get { return new Vector3(_jumpHorizontalAcceleration.x, 0f, _jumpHorizontalAcceleration.y); }
     }
 
     [SerializeField]
     Vector2 _atraForceHorizontalAcceleration;
-    public Vector2 AtraForceHorizontalAcceleration
+    public Vector3 AtraForceHorizontalAcceleration
     {
-        get { return _atraForceHorizontalAcceleration; }
+        get { return new Vector3(_atraForceHorizontalAcceleration.x, 0f, _atraForceHorizontalAcceleration.y); }
     }
 
     [SerializeField]
     Vector2 _fallHorizontalAcceleration;
-    public Vector2 FallHorizontalAcceleration
+    public Vector3 FallHorizontalAcceleration
     {
-        get { return _fallHorizontalAcceleration; }
+        get { return new Vector3(_fallHorizontalAcceleration.x, 0f, _fallHorizontalAcceleration.y); }
     }
 
     [SerializeField, Range(0f, float.MaxValue)]

@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputHandler : MonoBehaviour
+public class GamePlayInputManager : MonoBehaviour
 {
     PlayerInput _input;
     PlayerStatuses _playerStatuses;
     PlayerParameters _playerParams;
 
     Vector2 _moveInput = new();
-    public Vector2 MoveInput
+    public Vector3 MoveInput
     {
-        get { return _moveInput; }
+        get { return new Vector3(_moveInput.x, 0f, _moveInput.y); }
     }
 
-    Vector2 _smoothedMoveInput = new();
-    public Vector2 SmoothedMoveInput
+    Vector3 _smoothedMoveInput = new();
+    public Vector3 SmoothedMoveInput
     {
         get { return _smoothedMoveInput; }
     }
