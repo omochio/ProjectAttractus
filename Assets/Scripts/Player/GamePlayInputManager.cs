@@ -81,6 +81,7 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
+                _playerStatuses.isAtraForceEnabled = false;
                 if (_playerStatuses.isGrounded)
                 {
                     _playerStatuses.jumpInvoked = true;
