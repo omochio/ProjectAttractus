@@ -4871,46 +4871,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _jumpForce
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _slideForce
-      value: 900
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _sprintSpeed.x
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _sprintSpeed.y
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _smallSlideForce
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _basicSpeedLerpRate
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _jumpHorizontalAcceleration.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 254870419651997300, guid: 5092c91fbf2a8854aac753c0ed2268cd,
-        type: 3}
-      propertyPath: _jumpHorizontalAcceleration.y
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 254870419651997301, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}
       propertyPath: m_RootOrder

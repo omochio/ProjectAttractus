@@ -8,16 +8,17 @@ public class Atra : MonoBehaviour, IAtra
     [SerializeField]
     float _lifeTime;
 
+    [SerializeField]
+    float _forceEnableDistance;
+
     Rigidbody _rb;
 
     float _elapsedTime;
-    //Vector3 _beginPos;
-
+    
 
     void Awake()
     {
         TryGetComponent(out _rb);
-        //_beginPos = transform.position;
     }
 
     void Start()
@@ -41,24 +42,10 @@ public class Atra : MonoBehaviour, IAtra
     {
         Vector3 dif = transform.position - playerTransform.position;
         float distance = dif.magnitude;
-        if (!(distance < 1f))
+        if (distance >= _forceEnableDistance)
         {
             Vector3 force = dif.normalized * (_rb.mass * playerRb.mass / distance);
             playerRb.AddForce(force, ForceMode.Force);
         }
     }
-
-
-    //void FixedUpdate()
-    //{
-    //    //if ((transform.position - _beginPos).sqrMagnitude < Mathf.Pow(_distance, 2f))
-    //    //{
-    //    //    transform.position += transform.rotation * (_speed * Time.fixedDeltaTime * Vector3.forward);
-    //    //}
-    //    if ((transform.position - _beginPos).sqrMagnitude >= Mathf.Pow(_distance, 2f))
-    //    {
-    //        _rb.velocity = Vector3.zero;
-    //    }
-    //}
-
 }
