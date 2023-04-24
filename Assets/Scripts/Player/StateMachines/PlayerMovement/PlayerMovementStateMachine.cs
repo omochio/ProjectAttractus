@@ -55,10 +55,11 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     UnityAction _switchState;
 
     PlayerStatuses _playerStatuses;
-    PlayerParameters _playerParameters;
     GamePlayInputManager _gamePlayInputManager;
     Collider _collider;
     Rigidbody _rb;
+    [SerializeField]
+    PlayerParameters _playerParameters;
     [SerializeField]
     AtraGunHolder _atraGunHolder;
 
@@ -67,7 +68,6 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     void Awake()
     {
         TryGetComponent(out _playerStatuses);
-        TryGetComponent(out _playerParameters);
         TryGetComponent(out _gamePlayInputManager);
         TryGetComponent(out _collider);
         TryGetComponent(out _rb);

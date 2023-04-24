@@ -25,8 +25,6 @@ public class PlayerStatuses : MonoBehaviour
     public bool isSlidable = false;
     [NonSerialized]
     public bool isSlideCooling = false;
-    //[NonSerialized]
-    //public bool isGravityEnabled = true;
     [NonSerialized]
     public bool isAtraForceEnabled = false;
 
@@ -34,7 +32,7 @@ public class PlayerStatuses : MonoBehaviour
     public bool isWeaponHanded = true;
     [NonSerialized]
     public bool isAtraGunHanded = false;
-
+        
     [NonSerialized]
     float _slideElapsedTime;
     public float SlideElapsedTime

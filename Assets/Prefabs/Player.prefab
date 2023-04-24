@@ -106,7 +106,6 @@ GameObject:
   - component: {fileID: 254870419651997299}
   - component: {fileID: 1700962108}
   - component: {fileID: 254870419651997297}
-  - component: {fileID: 254870419651997300}
   - component: {fileID: 1700962117}
   - component: {fileID: 6551508923601463277}
   - component: {fileID: 1700962118}
@@ -237,32 +236,6 @@ MonoBehaviour:
   m_DefaultActionMap: GamePlay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &254870419651997300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254870419651997197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 717c7d1130d812b46a230452bc3c06d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _walkSpeed: {x: 8, y: 8}
-  _sprintSpeed: {x: 16, y: 16}
-  _crouchSpeed: {x: 4, y: 4}
-  _slideForce: 900
-  _smallSlideForce: 300
-  _slideResistanceAcceleration: {x: 30, y: 30}
-  _minSlidableSpeed: 10
-  _slideCoolTime: 0.5
-  _jumpForce: 200
-  _jumpHorizontalAcceleration: {x: 0.2, y: 0.2}
-  _atraForceHorizontalAcceleration: {x: 0.3, y: 0.3}
-  _fallHorizontalAcceleration: {x: 0.1, y: 0.1}
-  _gravityAcceleration: 9.8
-  _basicSpeedLerpRate: 8
 --- !u!114 &1700962117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21983dbe53a674745aa3ccd8fa25d2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
   _atraGunHolder: {fileID: 1942599936}
 --- !u!114 &1700962118
 MonoBehaviour:
@@ -314,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f44457e799950b4983e39cddbddd25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
 --- !u!114 &254870419651997198
 MonoBehaviour:
   m_ObjectHideFlags: 0

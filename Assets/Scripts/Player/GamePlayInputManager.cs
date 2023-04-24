@@ -5,7 +5,9 @@ public class GamePlayInputManager : MonoBehaviour
 {
     PlayerInput _input;
     PlayerStatuses _playerStatuses;
-    PlayerParameters _playerParams;
+
+    [SerializeField]
+    PlayerParameters _playerParameters;
 
     Vector2 _moveInput = new();
     public Vector3 MoveInput
@@ -23,7 +25,6 @@ public class GamePlayInputManager : MonoBehaviour
     {
         TryGetComponent(out _input);
         TryGetComponent(out _playerStatuses);
-        TryGetComponent(out _playerParams);
     }
 
     void OnEnable()
@@ -45,7 +46,7 @@ public class GamePlayInputManager : MonoBehaviour
 
     void Update()
     {
-        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParams.BasicSpeedLerpRate, Time.deltaTime);
+        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParameters.BasicSpeedLerpRate, Time.deltaTime);
     }
 
     void OnMove(InputAction.CallbackContext context)
