@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219285fed6e89824c92173b47289bd4f, type: 3}
   m_Name: PrototypeAtraParameter
   m_EditorClassIdentifier: 
-  _speed: 5
-  _mass: 1500
+  _speed: 50
+  _mass: 5000
   _lifeTime: 10
   _forceValidDistance: 5

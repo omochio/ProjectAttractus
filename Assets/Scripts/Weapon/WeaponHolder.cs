@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
@@ -9,6 +10,9 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField]
     PlayerStatus _playerStatus;
 
+    [SerializeField]
+    TMP_Text _ammoText;
+
     int _currentWeaponIndex = 0;
 
 
@@ -16,7 +20,7 @@ public class WeaponHolder : MonoBehaviour
     {
         foreach (Weapon weapon in _weapons)
         {
-            weapon.Init(_playerStatus);
+            weapon.Init(_playerStatus, _ammoText);
             weapon.gameObject.SetActive(false);
         }
         _weapons[_currentWeaponIndex].gameObject.SetActive(true);

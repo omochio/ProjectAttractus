@@ -22,13 +22,13 @@ public class Target : MonoBehaviour, IShootable
     public void Init(ScoreManager sm)
     {
         _scoreManager = sm;
-        _helth = _targetParameter.InitHelth;
     }
 
     void Awake()
     {
         TryGetComponent(out _rb);
         transform.rotation = Random.rotation;
+        _helth = _targetParameter.InitHelth;
     }
 
     void Update()
@@ -54,6 +54,7 @@ public class Target : MonoBehaviour, IShootable
         {
             _isBroken = true;
             _scoreManager.AddScore(_targetParameter.Score);
+            _helth = _targetParameter.InitHelth;
         }
     }
 
