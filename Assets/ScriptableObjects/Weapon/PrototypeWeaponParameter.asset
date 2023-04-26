@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b293946f3394bd4a88547d955a1603f, type: 3}
+  m_Name: PrototypeWeaponParameter
+  m_EditorClassIdentifier: 
+  _damage: 1
+  _fireRate: 10
+  _magazineSize: 200
+  _isAutomatic: 1
+  _reloadTime: 1
+  _projectileObj: {fileID: 8993783965038484455, guid: d71a3cb511bca664e8222322859904f3,
+    type: 3}

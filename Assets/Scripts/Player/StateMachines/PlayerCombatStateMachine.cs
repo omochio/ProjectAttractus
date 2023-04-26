@@ -32,13 +32,13 @@ public class PlayerCombatStateMachine : MonoBehaviour
     GameObject _atraGunHolderObj;
     AtraGunHolder _atraGunHolder;
 
-    PlayerStatuses _playerStatuses;
+    PlayerStatus _playerStatus;
 
     void Awake()
     {
         _weaponHolderObj.TryGetComponent(out _weaponHolder);
         _atraGunHolderObj.TryGetComponent(out _atraGunHolder);
-        TryGetComponent(out _playerStatuses);
+        TryGetComponent(out _playerStatus);
 
         _stateMachine = new ImtStateMachine<PlayerCombatStateMachine, StateEvent>(this);
 
@@ -83,11 +83,11 @@ public class PlayerCombatStateMachine : MonoBehaviour
     {
         protected override void SwitchState()
         {
-            if (Context._playerStatuses.attackInvoked)
+            if (Context._playerStatus.attackInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Attack);
             }
-            else if (Context._playerStatuses.reloadInvoked)
+            else if (Context._playerStatus.reloadInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Reload);
             }
@@ -99,19 +99,19 @@ public class PlayerCombatStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            if (Context._playerStatuses.isWeaponHanded)
+            if (Context._playerStatus.isWeaponHanded)
             {
-                Context._weaponHolder.GetCurrentWeapon().InitTimeCount();
+                Context._weaponHolder.GetCurrentWeapon().ResetTimeCount();
             }
         }
 
         protected internal override void Update()
         {
-            if (Context._playerStatuses.isWeaponHanded)
+            if (Context._playerStatus.isWeaponHanded)
             {
                 Context._weaponHolder.GetCurrentWeapon().Shot();
             }
-            else if (Context._playerStatuses.isAtraGunHanded)
+            else if (Context._playerStatus.isAtraGunHanded)
             {
                 Context._atraGunHolder.GetCurrentAtraGun().Shot();
             }
@@ -119,11 +119,11 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            if (Context._playerStatuses.attackInvoked)
+            if (Context._playerStatus.attackInvoked)
             {
-                if (Context._playerStatuses.isWeaponHanded)
+                if (Context._playerStatus.isWeaponHanded)
                 {
-                    if (Context._playerStatuses.reloadInvoked)
+                    if (Context._playerStatus.reloadInvoked)
                     {
                         StateMachine.SendEvent(StateEvent.Reload);
                     }
@@ -141,7 +141,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
         protected internal override void Enter()
         {
             base.Enter();
-            Context._weaponHolder.GetCurrentWeapon().InitTimeCount();
+            Context._weaponHolder.GetCurrentWeapon().ResetTimeCount();
         }
 
         protected internal override void Update()
@@ -151,9 +151,9 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            if (!Context._playerStatuses.reloadInvoked)
+            if (!Context._playerStatus.reloadInvoked)
             {
-                if (Context._playerStatuses.attackInvoked)
+                if (Context._playerStatus.attackInvoked)
                 {
                     StateMachine.SendEvent(StateEvent.Attack);
                 }

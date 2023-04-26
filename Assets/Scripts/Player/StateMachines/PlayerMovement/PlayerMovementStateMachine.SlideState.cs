@@ -10,7 +10,7 @@ public partial class PlayerMovementStateMachine
 
             float slideForce;
 
-            if (Context._playerStatuses.isSlideCooling)
+            if (Context._playerStatus.isSlideCooling)
             {
                 slideForce = Context._playerParameters.SmallSlideForce;
             }
@@ -25,7 +25,7 @@ public partial class PlayerMovementStateMachine
 
             Context._rb.AddForce(force, ForceMode.Impulse);
 
-            Context._playerStatuses.SlideElapsedTime = 0f;
+            Context._playerStatus.SlideElapsedTime = 0f;
         }
 
         protected internal override void Update()
@@ -39,15 +39,15 @@ public partial class PlayerMovementStateMachine
         protected override void SwitchState()
         {
 
-            if (Context._playerStatuses.jumpInvoked)
+            if (Context._playerStatus.jumpInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Jump);
             }
-            else if (!Context._playerStatuses.crouchOrSlideInvoked)
+            else if (!Context._playerStatus.crouchOrSlideInvoked)
             {
-                if (Context._playerStatuses.moveInvoked)
+                if (Context._playerStatus.moveInvoked)
                 {
-                    if (Context._playerStatuses.sprintInvoked)
+                    if (Context._playerStatus.sprintInvoked)
                     {
                         StateMachine.SendEvent(StateEvent.Sprint);
                     }
@@ -63,7 +63,7 @@ public partial class PlayerMovementStateMachine
             }
             else
             {
-                if (!Context._playerStatuses.isSlidable)
+                if (!Context._playerStatus.isSlidable)
                 {
                     StateMachine.SendEvent(StateEvent.Crouch);
                 }

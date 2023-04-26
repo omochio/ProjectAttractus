@@ -6,6 +6,8 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField]
     List<Weapon> _weapons = new();
 
+    [SerializeField]
+    PlayerStatus _playerStatus;
 
     int _currentWeaponIndex = 0;
 
@@ -14,6 +16,7 @@ public class WeaponHolder : MonoBehaviour
     {
         foreach (Weapon weapon in _weapons)
         {
+            weapon.Init(_playerStatus);
             weapon.gameObject.SetActive(false);
         }
         _weapons[_currentWeaponIndex].gameObject.SetActive(true);

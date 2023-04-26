@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerStatuses : MonoBehaviour
+public class PlayerStatus : MonoBehaviour
 {
     [NonSerialized]
     public bool moveInvoked = false;

@@ -22,11 +22,11 @@ public partial class PlayerMovementStateMachine
 
         protected override void SwitchState()
         {
-            if (Context._playerStatuses.isGrounded)
+            if (Context._playerStatus.isGrounded)
             {
-                if (Context._playerStatuses.crouchOrSlideInvoked)
+                if (Context._playerStatus.crouchOrSlideInvoked)
                 {
-                    if (Context._playerStatuses.isSlidable)
+                    if (Context._playerStatus.isSlidable)
                     {
                         StateMachine.SendEvent(StateEvent.Slide);
                     }
@@ -35,9 +35,9 @@ public partial class PlayerMovementStateMachine
                         StateMachine.SendEvent(StateEvent.Crouch);
                     }
                 }
-                else if (Context._playerStatuses.moveInvoked)
+                else if (Context._playerStatus.moveInvoked)
                 {
-                    if (Context._playerStatuses.sprintInvoked)
+                    if (Context._playerStatus.sprintInvoked)
                     {
                         StateMachine.SendEvent(StateEvent.Sprint);
                     }

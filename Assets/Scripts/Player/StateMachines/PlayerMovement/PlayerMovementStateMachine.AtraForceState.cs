@@ -20,7 +20,7 @@ public partial class PlayerMovementStateMachine
 
         protected override void SwitchState()
         {
-            if (!Context._playerStatuses.isAtraForceEnabled)
+            if (!Context._playerStatus.isAtraForceEnabled)
             {
                 stateMachine.SendEvent(StateEvent.Fall);
             }

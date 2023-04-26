@@ -3,13 +3,7 @@ using UnityEngine;
 public class Atra : MonoBehaviour, IAtra
 {
     [SerializeField]
-    float _speed;
-
-    [SerializeField]
-    float _lifeTime;
-
-    [SerializeField]
-    float _forceEnableDistance;
+    AtraParameter _atraParameter;
 
     Rigidbody _rb;
 
@@ -19,11 +13,8 @@ public class Atra : MonoBehaviour, IAtra
     void Awake()
     {
         TryGetComponent(out _rb);
-    }
-
-    void Start()
-    {
-        _rb.velocity = transform.rotation * (_speed * Vector3.forward);
+        _rb.velocity = transform.rotation * (_atraParameter.Speed * Vector3.forward);
+        _rb.mass = _atraParameter.Mass;
     }
 
     // Update is called once per frame
@@ -31,7 +22,7 @@ public class Atra : MonoBehaviour, IAtra
     {
         _elapsedTime += Time.deltaTime;
 
-        if (_elapsedTime >= _lifeTime)
+        if (_elapsedTime >= _atraParameter.LifeTime)
         {
             Destroy(gameObject);
         }
@@ -42,7 +33,7 @@ public class Atra : MonoBehaviour, IAtra
     {
         Vector3 dif = transform.position - playerTransform.position;
         float distance = dif.magnitude;
-        if (distance >= _forceEnableDistance)
+        if (distance >= _atraParameter.ForceValidDistance)
         {
             Vector3 force = dif.normalized * (_rb.mass * playerRb.mass / distance);
             playerRb.AddForce(force, ForceMode.Force);

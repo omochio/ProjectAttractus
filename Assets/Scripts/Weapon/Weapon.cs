@@ -2,39 +2,28 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour, IWeapon
 {
-
     [SerializeField]
-    float _damage;
-    [SerializeField]
-    float _fireRate;
-    [SerializeField]
-    int _magazineSize;
-    [SerializeField]
-    bool _isAutomatic;
-    [SerializeField]
-    float _reloadTime;
-    [SerializeField]
-    GameObject _projectileObj;
-    [SerializeField]
-    Transform _muzzlePos;
+    WeaponParameter _weaponParameter;
 
     float _reloadElapsedTime;
     float _shotElapsedTime;
     float _bulletsCount;
 
-    // TODO: Reconsider initialize purpose
-    [SerializeField]
-    PlayerStatuses _playerStatuses;
+    PlayerStatus _playerStatus;
     
+    public void Init(PlayerStatus ps)
+    {
+        _playerStatus = ps;
+    }
 
     void Awake()
     {
-        _bulletsCount = _magazineSize;
+        _bulletsCount = _weaponParameter.MagazineSize;
     }
 
-    public void InitTimeCount()
+    public void ResetTimeCount()
     {
-        _shotElapsedTime = (1f / _fireRate);
+        _shotElapsedTime = (1f / _weaponParameter.FireRate);
         _reloadElapsedTime = 0f;
     }
 
@@ -44,23 +33,25 @@ public class Weapon : MonoBehaviour, IWeapon
 
         if (_bulletsCount == 0)
         {
-            _playerStatuses.reloadInvoked = true;
-            //_playerStatuses.attackInvoked = false;
+            _playerStatus.reloadInvoked = true;
         }
         else
         {
             Ray ray = new(Camera.main.transform.position, Camera.main.transform.forward);
-            Debug.Log(_bulletsCount);
-            if (_isAutomatic)
+            //Debug.Log(_bulletsCount);
+            if (_weaponParameter.IsAutomatic)
             {
-                if (_shotElapsedTime >= (1f / _fireRate))
+                if (_shotElapsedTime >= (1f / _weaponParameter.FireRate))
                 {
                     --_bulletsCount;
                     // TODO: Temporary implementation
-                    Instantiate(_projectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
-                    if (Physics.Raycast(ray, out RaycastHit hit) && !hit.collider.CompareTag("Floor"))
+                    Instantiate(_weaponParameter.ProjectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
+                    if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                        if (hit.collider.gameObject.TryGetComponent(out IShootable shootable))
+                        {
+                            shootable.OnShot(_weaponParameter.Damage);
+                        }
                     }
                     _shotElapsedTime = 0f;
                 }
@@ -72,7 +63,7 @@ public class Weapon : MonoBehaviour, IWeapon
                 {
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
-                _playerStatuses.attackInvoked = false;
+                _playerStatus.attackInvoked = false;
             }
         }
     }
@@ -81,10 +72,10 @@ public class Weapon : MonoBehaviour, IWeapon
     {
         _reloadElapsedTime += Time.fixedDeltaTime;
 
-        if (_reloadElapsedTime >= _reloadTime)
+        if (_reloadElapsedTime >= _weaponParameter.ReloadTime)
         {
-            _bulletsCount = _magazineSize;
-            _playerStatuses.reloadInvoked = false;
+            _bulletsCount = _weaponParameter.MagazineSize;
+            _playerStatus.reloadInvoked = false;
             _reloadElapsedTime = 0f;
         }
     }

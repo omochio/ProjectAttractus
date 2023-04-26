@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class GamePlayInputManager : MonoBehaviour
 {
     PlayerInput _input;
-    PlayerStatuses _playerStatuses;
+    PlayerStatus _playerStatus;
 
     [SerializeField]
     PlayerParameters _playerParameters;
@@ -24,7 +24,7 @@ public class GamePlayInputManager : MonoBehaviour
     void Awake()
     {
         TryGetComponent(out _input);
-        TryGetComponent(out _playerStatuses);
+        TryGetComponent(out _playerStatus);
     }
 
     void OnEnable()
@@ -55,11 +55,11 @@ public class GamePlayInputManager : MonoBehaviour
         {
             case InputActionPhase.Performed:
                 _moveInput = context.ReadValue<Vector2>();
-                _playerStatuses.moveInvoked = true;
+                _playerStatus.moveInvoked = true;
                 break;
             case InputActionPhase.Canceled:
                 _moveInput = Vector2.zero;
-                _playerStatuses.moveInvoked = false;
+                _playerStatus.moveInvoked = false;
                 break;
         }
     }
@@ -69,10 +69,10 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.sprintInvoked = true;
+                _playerStatus.sprintInvoked = true;
                 break;
             case InputActionPhase.Canceled:
-                _playerStatuses.sprintInvoked = false;
+                _playerStatus.sprintInvoked = false;
                 break;
         }
     }
@@ -82,10 +82,10 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.isAtraForceEnabled = false;
-                if (_playerStatuses.isGrounded)
+                _playerStatus.isAtraForceEnabled = false;
+                if (_playerStatus.isGrounded)
                 {
-                    _playerStatuses.jumpInvoked = true;
+                    _playerStatus.jumpInvoked = true;
                 }
                 break;
         }
@@ -96,10 +96,10 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.crouchOrSlideInvoked = true;
+                _playerStatus.crouchOrSlideInvoked = true;
                 break;
             case InputActionPhase.Canceled:
-                _playerStatuses.crouchOrSlideInvoked = false;
+                _playerStatus.crouchOrSlideInvoked = false;
                 break;
         }
     }
@@ -109,10 +109,10 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.attackInvoked = true;
+                _playerStatus.attackInvoked = true;
                 break;
             case InputActionPhase.Canceled:
-                _playerStatuses.attackInvoked = false;
+                _playerStatus.attackInvoked = false;
                 break;
         }
     }
@@ -122,7 +122,7 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.reloadInvoked = true;
+                _playerStatus.reloadInvoked = true;
                 break;
         }
     }
@@ -132,8 +132,8 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.isWeaponHanded = false;
-                _playerStatuses.isAtraGunHanded = true;
+                _playerStatus.isWeaponHanded = false;
+                _playerStatus.isAtraGunHanded = true;
                 break;
         }
     }
@@ -143,8 +143,8 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatuses.isWeaponHanded = true;
-                _playerStatuses.isAtraGunHanded = false;
+                _playerStatus.isWeaponHanded = true;
+                _playerStatus.isAtraGunHanded = false;
                 break;
         }
     }
@@ -154,13 +154,13 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                if (_playerStatuses.isAtraForceEnabled)
+                if (_playerStatus.isAtraForceEnabled)
                 {
-                    _playerStatuses.isAtraForceEnabled = false;
+                    _playerStatus.isAtraForceEnabled = false;
                 }
                 else
                 {
-                    _playerStatuses.isAtraForceEnabled = true;
+                    _playerStatus.isAtraForceEnabled = true;
                 }
                 break;
         }

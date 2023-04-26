@@ -24,13 +24,13 @@ public class PlayerRootStateMachine : MonoBehaviour
 
     UnityAction _switchState;
 
-    PlayerStatuses _playerStatuses;
+    PlayerStatus _playerStatus;
     PlayerMovementStateMachine _playerMovementStateMachine;
     PlayerCombatStateMachine _playerCombatStateMachine;
 
     void Awake()
     {
-        TryGetComponent(out _playerStatuses);
+        TryGetComponent(out _playerStatus);
         TryGetComponent(out _playerMovementStateMachine);
         TryGetComponent(out _playerCombatStateMachine);
 
@@ -73,7 +73,7 @@ public class PlayerRootStateMachine : MonoBehaviour
 
         protected override void SwitchState()
         {
-            if (!Context._playerStatuses.isAlive)
+            if (!Context._playerStatus.isAlive)
             {
                 StateMachine.SendEvent(StateEvent.Die);
             }

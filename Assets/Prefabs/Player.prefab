@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapons:
   - {fileID: 3228640717152409878}
+  _playerStatus: {fileID: 1112653052911615213}
 --- !u!1 &1942599934
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +111,7 @@ GameObject:
   - component: {fileID: 6551508923601463277}
   - component: {fileID: 1700962118}
   - component: {fileID: 254870419651997296}
-  - component: {fileID: 254870419651997198}
+  - component: {fileID: 1112653052911615213}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -289,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
---- !u!114 &254870419651997198
+--- !u!114 &1112653052911615213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,7 +299,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 254870419651997197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edd0d7d11507f784ea985bb4c41ec72a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6adf11377319c46a18d022f79272bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1044554567
@@ -317,12 +318,18 @@ PrefabInstance:
         type: 3}
       propertyPath: _muzzlePos
       value: 
-      objectReference: {fileID: 7096545382645551487}
+      objectReference: {fileID: 0}
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
       propertyPath: _playerStatuses
       value: 
-      objectReference: {fileID: 254870419651997198}
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _weaponParameter
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c4fe580323c8474f8c43bace10d8468,
+        type: 2}
     - target: {fileID: 5251862552883890355, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
       propertyPath: m_RootOrder
@@ -408,12 +415,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1044554567}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7096545382645551487 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7096545382347600440, guid: 4ea1cb02bac4a684684c36ba096b61d7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1044554567}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2071878778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -495,23 +496,22 @@ PrefabInstance:
         type: 3}
       propertyPath: _muzzlePos
       value: 
-      objectReference: {fileID: 7217725929922601431}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244938330151091730, guid: e1fc335e9198e0d4c944dfd398709720,
+        type: 3}
+      propertyPath: _playerStatus
+      value: 
+      objectReference: {fileID: 1112653052911615213}
     - target: {fileID: 7244938330151091730, guid: e1fc335e9198e0d4c944dfd398709720,
         type: 3}
       propertyPath: _playerStatuses
       value: 
-      objectReference: {fileID: 254870419651997198}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1fc335e9198e0d4c944dfd398709720, type: 3}
 --- !u!4 &3447234715023425283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3447234717016122233, guid: e1fc335e9198e0d4c944dfd398709720,
-    type: 3}
-  m_PrefabInstance: {fileID: 2071878778}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7217725929922601431 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7217725927862042029, guid: e1fc335e9198e0d4c944dfd398709720,
     type: 3}
   m_PrefabInstance: {fileID: 2071878778}
   m_PrefabAsset: {fileID: 0}

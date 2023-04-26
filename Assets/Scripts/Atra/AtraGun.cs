@@ -3,10 +3,7 @@
 public class AtraGun : MonoBehaviour, IAtraGun
 {
     [SerializeField]
-    Transform _muzzlePos;
-
-    [SerializeField]
-    PlayerStatuses _playerStatuses;
+    PlayerStatus _playerStatus;
 
     [SerializeField]
     GameObject _atraPrefab;
@@ -18,12 +15,11 @@ public class AtraGun : MonoBehaviour, IAtraGun
     {
         if (!_atraObj)
         {
-            // TODO: Rotation is not properly
             _atraObj = Instantiate(_atraPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
         }
-        _playerStatuses.isAtraGunHanded = false;
-        _playerStatuses.isWeaponHanded = true;
-        _playerStatuses.attackInvoked = false;
+        _playerStatus.isAtraGunHanded = false;
+        _playerStatus.isWeaponHanded = true;
+        _playerStatus.attackInvoked = false;
     }
 
     public void AddAtraForce(Transform playerTransform, Rigidbody playerRb)
@@ -36,7 +32,7 @@ public class AtraGun : MonoBehaviour, IAtraGun
         }
         else
         {
-            _playerStatuses.isAtraForceEnabled = false;
+            _playerStatus.isAtraForceEnabled = false;
         }
     }
 }
