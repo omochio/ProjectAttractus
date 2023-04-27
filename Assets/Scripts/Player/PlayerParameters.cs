@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName="ScriptableObject/PlayerParameter")]
+[CreateAssetMenu(menuName="ScriptableObject/Parameter/PlayerParameter")]
 public class PlayerParameters : ScriptableObject
 {
     [SerializeField]
@@ -101,5 +101,4 @@ public class PlayerParameters : ScriptableObject
     {
         get { return _basicSpeedLerpRate; }
     }
-
 }

@@ -19,19 +19,19 @@ public partial class PlayerMovementStateMachine
 
         protected override void SwitchState()
         {
-            if (!Context._playerStatus.moveInvoked)
+            if (!Context._playerStatus.MoveInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Idle);
             }
-            else if (Context._playerStatus.sprintInvoked)
+            else if (Context._playerStatus.SprintInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Sprint);
             }
-            else if (Context._playerStatus.crouchOrSlideInvoked)
+            else if (Context._playerStatus.CrouchOrSlideInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Crouch);
             }
-            else if (Context._playerStatus.jumpInvoked)
+            else if (Context._playerStatus.JumpInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Jump);
             }

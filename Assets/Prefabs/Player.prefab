@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapons:
   - {fileID: 3228640717152409878}
-  _playerStatus: {fileID: 1112653052911615213}
+  _ammoText: {fileID: 0}
 --- !u!1 &1942599934
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +111,6 @@ GameObject:
   - component: {fileID: 6551508923601463277}
   - component: {fileID: 1700962118}
   - component: {fileID: 254870419651997296}
-  - component: {fileID: 1112653052911615213}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -249,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51cba4bff6d0564ea2410093607a789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStatus: {fileID: 0}
 --- !u!114 &6551508923601463277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21983dbe53a674745aa3ccd8fa25d2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStatus: {fileID: 0}
   _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
   _atraGunHolder: {fileID: 1942599936}
 --- !u!114 &1700962118
@@ -277,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolderObj: {fileID: 1019080483}
   _atraGunHolderObj: {fileID: 1942599934}
+  _playerStatus: {fileID: 0}
 --- !u!114 &254870419651997296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,18 +292,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
---- !u!114 &1112653052911615213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254870419651997197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c6adf11377319c46a18d022f79272bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1044554567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -501,7 +491,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _playerStatus
       value: 
-      objectReference: {fileID: 1112653052911615213}
+      objectReference: {fileID: 0}
     - target: {fileID: 7244938330151091730, guid: e1fc335e9198e0d4c944dfd398709720,
         type: 3}
       propertyPath: _playerStatuses

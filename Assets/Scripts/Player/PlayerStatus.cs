@@ -1,40 +1,119 @@
 using System;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour
+[CreateAssetMenu(menuName = "ScriptableObject/Status/PlayerStatus")]
+public class PlayerStatus : ScriptableObject
 {
-    [NonSerialized]
-    public bool moveInvoked = false;
-    [NonSerialized]
-    public bool sprintInvoked = false;
-    [NonSerialized]
-    public bool jumpInvoked = false;
-    [NonSerialized]
-    public bool crouchOrSlideInvoked = false;
-    [NonSerialized]
-    public bool attackInvoked = false;
-    [NonSerialized]
-    public bool reloadInvoked = false;
+    void OnEnable()
+    {
+        MoveInvoked = _moveInvoked;
+        SprintInvoked = _sprintInvoked;
+        JumpInvoked = _jumpInvoked;
+        CrouchOrSlideInvoked = _crouchOrSlideInvoked;
+        AttackInvoked = _attackInvoked;
+        ReloadInvoked = _reloadInvoked;
+        IsAlive = _isAlive;
+        IsGrounded = _isGrounded;
+        IsSlidable = _isSlidable;
+        IsSlideCooling = _isSlideCooling;
+        IsAtraForceEnabled = _isAtraForceEnabled;
+        IsWeaponHanded = _isWeaponHanded;
+        IsAtraGunHanded = _isAtraGunHanded;
+        SlideElapsedTime = _slideElapsedTime;
+    }
 
-    [NonSerialized]
-    public bool isAlive = true;
+    bool _moveInvoked = false;
+    public bool MoveInvoked
+    {
+        get => _moveInvoked;
+        set => _moveInvoked = value;
+    }
 
-    [NonSerialized]
-    public bool isGrounded = true;
-    [NonSerialized]
-    public bool isSlidable = false;
-    [NonSerialized]
-    public bool isSlideCooling = false;
-    [NonSerialized]
-    public bool isAtraForceEnabled = false;
+    bool _sprintInvoked = false;
+    public bool SprintInvoked
+    {
+        get => _sprintInvoked;
+        set => _sprintInvoked = value;
+    }
 
-    [NonSerialized]
-    public bool isWeaponHanded = true;
-    [NonSerialized]
-    public bool isAtraGunHanded = false;
+    bool _jumpInvoked = false;
+    public bool JumpInvoked
+    {
+        get => _jumpInvoked;
+        set => _jumpInvoked = value;
+    }
+
+    bool _crouchOrSlideInvoked = false;
+    public bool CrouchOrSlideInvoked
+    {
+        get => _crouchOrSlideInvoked;
+        set => _crouchOrSlideInvoked = value;
+    }
+
+    bool _attackInvoked = false;
+    public bool AttackInvoked
+    {
+        get => _attackInvoked; 
+        set => _attackInvoked = value;
+    }
+
+    bool _reloadInvoked = false;
+    public bool ReloadInvoked
+    {
+        get => _reloadInvoked;
+        set => _reloadInvoked = value;
+    }
+
+    bool _isAlive = true;
+    public bool IsAlive
+    {
+        get => _isAlive;
+        set => _isAlive = value;
+    }
+
+    bool _isGrounded = true;
+    public bool IsGrounded
+    {
+        get => _isGrounded;
+        set => _isGrounded = value;
+    }
+
+    bool _isSlidable = false;
+    public bool IsSlidable
+    {
+        get => _isSlidable;
+        set => _isSlidable = value;
+    }
+
+    bool _isSlideCooling = false;
+    public bool IsSlideCooling
+    {
+        get => _isSlideCooling;
+        set => _isSlideCooling = value;
+    }
+
+    bool _isAtraForceEnabled = false;
+    public bool IsAtraForceEnabled
+    {
+        get => _isAtraForceEnabled; 
+        set => _isAtraForceEnabled = value;
+    }
+
+    bool _isWeaponHanded = true;
+    public bool IsWeaponHanded
+    {
+        get => _isWeaponHanded; 
+        set => _isWeaponHanded = value;
+    }
+
+    bool _isAtraGunHanded = false;
+    public bool IsAtraGunHanded
+    {
+        get => _isAtraGunHanded; 
+        set => _isAtraGunHanded = value;
+    }
         
-    [NonSerialized]
-    float _slideElapsedTime;
+    float _slideElapsedTime = 0f;
     public float SlideElapsedTime
     {
         get { return _slideElapsedTime; }

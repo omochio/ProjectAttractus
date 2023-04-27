@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/AtraParameter")]
+[CreateAssetMenu(menuName = "ScriptableObject/Parameter/AtraParameter")]
 public class AtraParameter : ScriptableObject
 {
     [SerializeField]

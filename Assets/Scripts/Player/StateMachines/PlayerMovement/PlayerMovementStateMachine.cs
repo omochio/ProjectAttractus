@@ -14,25 +14,25 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             // TODO: Re consider conditions
-            Context._playerStatus.isGrounded = (Mathf.Abs(Context._rb.velocity.y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
+            Context._playerStatus.IsGrounded = (Mathf.Abs(Context._rb.velocity.y) <= 0.1f) && Physics.Raycast(Context.transform.position + Vector3.up * Context._collider.bounds.extents.y, Vector3.down, Context._collider.bounds.extents.y + 0.11f);
 
             Vector2 horizontalVelocity = new(
                 Context._rb.velocity.x,
                 Context._rb.velocity.z);
-            if (horizontalVelocity.sqrMagnitude < Mathf.Pow(Context._playerParameters.MinSlidableSpeed, 2f) || !Context._playerStatus.isGrounded)
+            if (horizontalVelocity.sqrMagnitude < Mathf.Pow(Context._playerParameters.MinSlidableSpeed, 2f) || !Context._playerStatus.IsGrounded)
             {
-                Context._playerStatus.isSlidable = false;
+                Context._playerStatus.IsSlidable = false;
             }
             else
             {
-                Context._playerStatus.isSlidable = true;
+                Context._playerStatus.IsSlidable = true;
             }
 
-            if (Context._playerStatus.isSlideCooling && Context._playerStatus.isGrounded)
+            if (Context._playerStatus.IsSlideCooling && Context._playerStatus.IsGrounded)
             {
                 Context._playerStatus.SlideElapsedTime += Time.fixedDeltaTime;
             }
-            Context._playerStatus.isSlideCooling = Context._playerStatus.SlideElapsedTime < Context._playerParameters.SlideCoolTime;
+            Context._playerStatus.IsSlideCooling = Context._playerStatus.SlideElapsedTime < Context._playerParameters.SlideCoolTime;
         }
 
         protected virtual void SwitchState() { }
@@ -54,6 +54,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
 
     UnityAction _switchState;
 
+    [SerializeField]
     PlayerStatus _playerStatus;
     GamePlayInputManager _gamePlayInputManager;
     Collider _collider;
@@ -67,7 +68,6 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
 
     void Awake()
     {
-        TryGetComponent(out _playerStatus);
         TryGetComponent(out _gamePlayInputManager);
         TryGetComponent(out _collider);
         TryGetComponent(out _rb);
@@ -146,17 +146,15 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        //Debug.Log(_stateMachine.CurrentStateName);
-        //Debug.Log(_playerStatuses.isSlidable);
     }
 
     public void SwitchState()
     {
-        if (_playerStatus.isAtraForceEnabled)
+        if (_playerStatus.IsAtraForceEnabled)
         {
             _stateMachine.SendEvent(StateEvent.AtraForce);
         }
-        else if (_stateMachine.CurrentStateName != "JumpState" && !_playerStatus.isGrounded)
+        else if (_stateMachine.CurrentStateName != "JumpState" && !_playerStatus.IsGrounded)
         {
             _stateMachine.SendEvent(StateEvent.Fall);
         }

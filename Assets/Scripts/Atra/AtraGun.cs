@@ -17,9 +17,9 @@ public class AtraGun : MonoBehaviour, IAtraGun
         {
             _atraObj = Instantiate(_atraPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
         }
-        _playerStatus.isAtraGunHanded = false;
-        _playerStatus.isWeaponHanded = true;
-        _playerStatus.attackInvoked = false;
+        _playerStatus.IsAtraGunHanded = false;
+        _playerStatus.IsWeaponHanded = true;
+        _playerStatus.AttackInvoked = false;
     }
 
     public void AddAtraForce(Transform playerTransform, Rigidbody playerRb)
@@ -32,7 +32,7 @@ public class AtraGun : MonoBehaviour, IAtraGun
         }
         else
         {
-            _playerStatus.isAtraForceEnabled = false;
+            _playerStatus.IsAtraForceEnabled = false;
         }
     }
 }

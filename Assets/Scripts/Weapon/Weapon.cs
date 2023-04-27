@@ -12,11 +12,11 @@ public class Weapon : MonoBehaviour, IWeapon
     float _shotElapsedTime;
     float _ammoCount;
 
+    [SerializeField]
     PlayerStatus _playerStatus;
     
-    public void Init(PlayerStatus ps, TMP_Text txt)
+    public void Init(TMP_Text txt)
     {
-        _playerStatus = ps;
         _ammoText = txt;
 
         _ammoCount = _weaponParameter.MagazineSize;
@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour, IWeapon
 
         if (_ammoCount == 0)
         {
-            _playerStatus.reloadInvoked = true;
+            _playerStatus.ReloadInvoked = true;
         }
         else
         {
@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour, IWeapon
                 {
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
-                _playerStatus.attackInvoked = false;
+                _playerStatus.AttackInvoked = false;
             }
         }
     }
@@ -81,7 +81,7 @@ public class Weapon : MonoBehaviour, IWeapon
         {
             _ammoCount = _weaponParameter.MagazineSize;
             _ammoText.text = $"Ammo: {_ammoCount}";
-            _playerStatus.reloadInvoked = false;
+            _playerStatus.ReloadInvoked = false;
             _reloadElapsedTime = 0f;
         }
     }

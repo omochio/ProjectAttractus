@@ -10,7 +10,7 @@ public partial class PlayerMovementStateMachine
 
             float slideForce;
 
-            if (Context._playerStatus.isSlideCooling)
+            if (Context._playerStatus.IsSlideCooling)
             {
                 slideForce = Context._playerParameters.SmallSlideForce;
             }
@@ -39,15 +39,15 @@ public partial class PlayerMovementStateMachine
         protected override void SwitchState()
         {
 
-            if (Context._playerStatus.jumpInvoked)
+            if (Context._playerStatus.JumpInvoked)
             {
                 StateMachine.SendEvent(StateEvent.Jump);
             }
-            else if (!Context._playerStatus.crouchOrSlideInvoked)
+            else if (!Context._playerStatus.CrouchOrSlideInvoked)
             {
-                if (Context._playerStatus.moveInvoked)
+                if (Context._playerStatus.MoveInvoked)
                 {
-                    if (Context._playerStatus.sprintInvoked)
+                    if (Context._playerStatus.SprintInvoked)
                     {
                         StateMachine.SendEvent(StateEvent.Sprint);
                     }
@@ -63,7 +63,7 @@ public partial class PlayerMovementStateMachine
             }
             else
             {
-                if (!Context._playerStatus.isSlidable)
+                if (!Context._playerStatus.IsSlidable)
                 {
                     StateMachine.SendEvent(StateEvent.Crouch);
                 }
