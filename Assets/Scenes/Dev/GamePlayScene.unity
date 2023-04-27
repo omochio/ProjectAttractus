@@ -731,6 +731,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 254870419651997296, guid: 5092c91fbf2a8854aac753c0ed2268cd,
+        type: 3}
+      propertyPath: _playerStatus
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e,
+        type: 2}
     - target: {fileID: 254870419651997301, guid: 5092c91fbf2a8854aac753c0ed2268cd,
         type: 3}
       propertyPath: m_RootOrder
@@ -901,7 +907,7 @@ PrefabInstance:
     - target: {fileID: 8569662838915137054, guid: 093a6c01c8ddf4148ac57144984749d6,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 1
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8569662838915137055, guid: 093a6c01c8ddf4148ac57144984749d6,
         type: 3}
