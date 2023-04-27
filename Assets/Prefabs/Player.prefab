@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51cba4bff6d0564ea2410093607a789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStatus: {fileID: 0}
+  _playerStatus: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
 --- !u!114 &6551508923601463277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21983dbe53a674745aa3ccd8fa25d2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStatus: {fileID: 0}
+  _playerStatus: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
   _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
   _atraGunHolder: {fileID: 1942599936}
 --- !u!114 &1700962118
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHolderObj: {fileID: 1019080483}
   _atraGunHolderObj: {fileID: 1942599934}
-  _playerStatus: {fileID: 0}
+  _playerStatus: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
 --- !u!114 &254870419651997296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f44457e799950b4983e39cddbddd25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStatus: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
   _playerParameters: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
 --- !u!1001 &1044554567
 PrefabInstance:
@@ -309,6 +310,12 @@ PrefabInstance:
       propertyPath: _muzzlePos
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
+        type: 3}
+      propertyPath: _playerStatus
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e,
+        type: 2}
     - target: {fileID: 3228640717794048593, guid: 4ea1cb02bac4a684684c36ba096b61d7,
         type: 3}
       propertyPath: _playerStatuses
@@ -491,7 +498,8 @@ PrefabInstance:
         type: 3}
       propertyPath: _playerStatus
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e,
+        type: 2}
     - target: {fileID: 7244938330151091730, guid: e1fc335e9198e0d4c944dfd398709720,
         type: 3}
       propertyPath: _playerStatuses

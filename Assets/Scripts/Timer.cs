@@ -20,4 +20,16 @@ public class Timer
             return false;
         }
     }
+
+    public float GetRemainTime(float currentTime)
+    {
+        if (IsTimeUp(currentTime))
+        {
+            return 0;
+        }
+        else
+        {
+            return _setTime - (currentTime - _startTime);
+        }
+    }
 }

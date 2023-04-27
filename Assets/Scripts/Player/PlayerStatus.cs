@@ -22,6 +22,7 @@ public class PlayerStatus : ScriptableObject
         SlideElapsedTime = _slideElapsedTime;
     }
 
+    [NonSerialized]
     bool _moveInvoked = false;
     public bool MoveInvoked
     {
@@ -29,6 +30,7 @@ public class PlayerStatus : ScriptableObject
         set => _moveInvoked = value;
     }
 
+    [NonSerialized]
     bool _sprintInvoked = false;
     public bool SprintInvoked
     {
@@ -36,6 +38,7 @@ public class PlayerStatus : ScriptableObject
         set => _sprintInvoked = value;
     }
 
+    [NonSerialized]
     bool _jumpInvoked = false;
     public bool JumpInvoked
     {
@@ -43,6 +46,7 @@ public class PlayerStatus : ScriptableObject
         set => _jumpInvoked = value;
     }
 
+    [NonSerialized]
     bool _crouchOrSlideInvoked = false;
     public bool CrouchOrSlideInvoked
     {
@@ -50,6 +54,7 @@ public class PlayerStatus : ScriptableObject
         set => _crouchOrSlideInvoked = value;
     }
 
+    [NonSerialized]
     bool _attackInvoked = false;
     public bool AttackInvoked
     {
@@ -57,6 +62,7 @@ public class PlayerStatus : ScriptableObject
         set => _attackInvoked = value;
     }
 
+    [NonSerialized]
     bool _reloadInvoked = false;
     public bool ReloadInvoked
     {
@@ -64,6 +70,7 @@ public class PlayerStatus : ScriptableObject
         set => _reloadInvoked = value;
     }
 
+    [NonSerialized]
     bool _isAlive = true;
     public bool IsAlive
     {
@@ -71,6 +78,7 @@ public class PlayerStatus : ScriptableObject
         set => _isAlive = value;
     }
 
+    [NonSerialized]
     bool _isGrounded = true;
     public bool IsGrounded
     {
@@ -78,6 +86,7 @@ public class PlayerStatus : ScriptableObject
         set => _isGrounded = value;
     }
 
+    [NonSerialized]
     bool _isSlidable = false;
     public bool IsSlidable
     {
@@ -85,6 +94,7 @@ public class PlayerStatus : ScriptableObject
         set => _isSlidable = value;
     }
 
+    [NonSerialized]
     bool _isSlideCooling = false;
     public bool IsSlideCooling
     {
@@ -92,6 +102,7 @@ public class PlayerStatus : ScriptableObject
         set => _isSlideCooling = value;
     }
 
+    [NonSerialized]
     bool _isAtraForceEnabled = false;
     public bool IsAtraForceEnabled
     {
@@ -99,6 +110,7 @@ public class PlayerStatus : ScriptableObject
         set => _isAtraForceEnabled = value;
     }
 
+    [NonSerialized]
     bool _isWeaponHanded = true;
     public bool IsWeaponHanded
     {
@@ -106,13 +118,15 @@ public class PlayerStatus : ScriptableObject
         set => _isWeaponHanded = value;
     }
 
+    [NonSerialized]
     bool _isAtraGunHanded = false;
     public bool IsAtraGunHanded
     {
         get => _isAtraGunHanded; 
         set => _isAtraGunHanded = value;
     }
-        
+
+    [NonSerialized]
     float _slideElapsedTime = 0f;
     public float SlideElapsedTime
     {
