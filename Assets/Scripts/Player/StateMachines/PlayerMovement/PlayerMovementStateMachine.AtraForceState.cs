@@ -15,7 +15,6 @@ public partial class PlayerMovementStateMachine
             Vector3 targetVelocity = Context.transform.rotation
                 * Vector3.Scale(Context._playerStatus.SmoothedMoveInput, Context._playerParameters.AtraForceHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
-
         }
 
         protected override void SwitchState()

@@ -6,17 +6,20 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     TMP_Text _scoreText;
 
-    int _score;
-    public int Score
-    { get => _score; }
+    [SerializeField]
+    PlayModeStatus _playModeStatus;
+
+    //int _score;
+    //public int Score
+    //{ get => _score; }
 
     public void AddScore(int addVal)
     {
-        _score += addVal;
+        _playModeStatus.Score += addVal;
     }
 
     void Update()
     {
-        _scoreText.text = $"Score: {_score}";
+        _scoreText.text = $"Score: {_playModeStatus.Score}";
     }
 }

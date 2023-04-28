@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: PlayModeParameter
   m_EditorClassIdentifier: 
   _readyTime: 3
-  _readyTextTime: 1
-  _timeLimit: 180
+  _timeLimit: 60

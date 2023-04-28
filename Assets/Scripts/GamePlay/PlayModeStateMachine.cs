@@ -30,14 +30,17 @@ public class PlayModeStateMachine : MonoBehaviour
     [SerializeField]
     PlayModeStatus _playModeStatus;
     [SerializeField]
+    GameObject _playingCanvas;
+    [SerializeField]
     TMP_Text _readyText;
     [SerializeField]
     TMP_Text _timeLimitText;
     [SerializeField]
-    GameObject _playingCanvas;
-    [SerializeField]
     GameObject _pausedCanvas;
-
+    [SerializeField]
+    GameObject _gameOverCanvas;
+    [SerializeField]
+    TMP_Text _resultText;
 
     UnityAction _switchState;
 
@@ -149,11 +152,15 @@ public class PlayModeStateMachine : MonoBehaviour
         {
             base.Enter();
             Time.timeScale = 0f;
+            Context._playingCanvas.SetActive(false);
+            Context._gameOverCanvas.SetActive(true);
+            Context._resultText.text = $"Score: {Context._playModeStatus.Score}";
         }
 
         protected internal override void Exit()
         {
             Time.timeScale = 1f;
+            Context._gameOverCanvas.SetActive(false);
         }
     }
 
