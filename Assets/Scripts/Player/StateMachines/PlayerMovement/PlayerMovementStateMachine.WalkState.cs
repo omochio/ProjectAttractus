@@ -13,7 +13,7 @@ public partial class PlayerMovementStateMachine
         {
             base.Update();
             var targetVelocity = Context.transform.rotation 
-                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.WalkSpeed);
+                * Vector3.Scale(Context._playerStatus.SmoothedMoveInput, Context._playerParameters.WalkSpeed);
             Context._rb.velocity = targetVelocity;
         }
 

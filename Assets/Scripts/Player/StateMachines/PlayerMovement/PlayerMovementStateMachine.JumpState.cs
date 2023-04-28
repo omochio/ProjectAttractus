@@ -18,7 +18,7 @@ public partial class PlayerMovementStateMachine
             base.Update();
 
             Vector3 targetVelocity = Context.transform.rotation
-                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.JumpHorizontalAcceleration);
+                * Vector3.Scale(Context._playerStatus.SmoothedMoveInput, Context._playerParameters.JumpHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
         }
 

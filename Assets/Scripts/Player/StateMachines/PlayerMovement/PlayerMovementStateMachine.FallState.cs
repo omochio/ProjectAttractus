@@ -15,7 +15,7 @@ public partial class PlayerMovementStateMachine
 
             // Horizontal move
             Vector3 targetVelocity = Context.transform.rotation
-                * Vector3.Scale(Context._gamePlayInputManager.SmoothedMoveInput, Context._playerParameters.FallHorizontalAcceleration);
+                * Vector3.Scale(Context._playerStatus.SmoothedMoveInput, Context._playerParameters.FallHorizontalAcceleration);
             Context._rb.velocity += targetVelocity;
 
         }

@@ -7,19 +7,10 @@ public class GamePlayInputManager : MonoBehaviour
     [SerializeField]
     PlayerStatus _playerStatus;
     [SerializeField]
-    PlayerParameters _playerParameters;
+    PlayerParameter _playerParameter;
+    [SerializeField]
+    PlayModeStatus _playModeStatus;
 
-    Vector2 _moveInput = new();
-    public Vector3 MoveInput
-    {
-        get { return new Vector3(_moveInput.x, 0f, _moveInput.y); }
-    }
-
-    Vector3 _smoothedMoveInput = new();
-    public Vector3 SmoothedMoveInput
-    {
-        get { return _smoothedMoveInput; }
-    }
 
     void Awake()
     {
@@ -41,11 +32,12 @@ public class GamePlayInputManager : MonoBehaviour
         _input.actions["SwitchToAtraGunHolder"].performed += OnSwitchToAtraGunHolder;
         _input.actions["SwitchToWeaponHolder"].performed += OnSwitchToWeaponHolder;
         _input.actions["EnableAtraForce"].performed += OnEnableAtraForce;
+        _input.actions["Pause"].performed += OnPause;
     }
 
     void Update()
     {
-        _smoothedMoveInput = Utilities.FRILerp(_smoothedMoveInput, MoveInput, _playerParameters.BasicSpeedLerpRate, Time.deltaTime);
+        _playerStatus.SmoothedMoveInput = Utilities.FRILerp(_playerStatus.SmoothedMoveInput, _playerStatus.MoveInput, _playerParameter.BasicSpeedLerpRate, Time.deltaTime);
     }
 
     void OnMove(InputAction.CallbackContext context)
@@ -53,11 +45,11 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _moveInput = context.ReadValue<Vector2>();
+                _playerStatus.MoveInput = context.ReadValue<Vector2>();
                 _playerStatus.MoveInvoked = true;
                 break;
             case InputActionPhase.Canceled:
-                _moveInput = Vector2.zero;
+                _playerStatus.MoveInput = Vector2.zero;
                 _playerStatus.MoveInvoked = false;
                 break;
         }
@@ -160,6 +152,23 @@ public class GamePlayInputManager : MonoBehaviour
                 else
                 {
                     _playerStatus.IsAtraForceEnabled = true;
+                }
+                break;
+        }
+    }
+
+    void OnPause(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                if (_playModeStatus.IsPaused)
+                {
+                    _playModeStatus.IsPaused = false;
+                }
+                else
+                {
+                    _playModeStatus.IsPaused = true;
                 }
                 break;
         }

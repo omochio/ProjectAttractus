@@ -33,6 +33,10 @@ public class PlayModeStateMachine : MonoBehaviour
     TMP_Text _readyText;
     [SerializeField]
     TMP_Text _timeLimitText;
+    [SerializeField]
+    GameObject _playingCanvas;
+    [SerializeField]
+    GameObject _pausedCanvas;
 
 
     UnityAction _switchState;
@@ -76,15 +80,18 @@ public class PlayModeStateMachine : MonoBehaviour
         protected internal override void Update()
         {
             Context._readyText.text = $"{(int)_timer.GetRemainTime(Time.unscaledTime)}";
-            if (_timer.IsTimeUp(Time.unscaledTime))
+            if (_timer.GetRemainTime(Time.unscaledTime) < 1f)
             {
-                Context._playModeStatus.IsPlaying = true;
+                Context._readyText.text = "<color=#FF0000FF>START!!</color>";
+                if (_timer.IsTimeUp(Time.unscaledTime))
+                {
+                    Context._playModeStatus.IsPlaying = true;
+                }
             }
         }
 
         protected internal override void Exit()
         {
-            Context._readyText.text = "<color=#FF0000FF>START!!</color>";
             Time.timeScale = 1f;
         }
 
@@ -104,23 +111,18 @@ public class PlayModeStateMachine : MonoBehaviour
 
     class PlayingState : PlayModeStateBase
     {
-        Timer _readyTextTimer;
         Timer _gameTimer;
 
         protected internal override void Enter()
         {
             base.Enter();
-            _readyTextTimer = new(Time.time, Context._playModeParameter.ReadyTextTime);
             _gameTimer = new(Time.time, Context._playModeParameter.TimeLimit);
+            Context._readyText.gameObject.SetActive(false);
         }
 
         protected internal override void Update()
         {
             Context._timeLimitText.text = $"Time: {(int)_gameTimer.GetRemainTime(Time.time)}";
-            if (_readyTextTimer.IsTimeUp(Time.time))
-            {
-                Context._readyText.gameObject.SetActive(false);
-            }
             if (_gameTimer.IsTimeUp(Time.time))
             {
                 Context._playModeStatus.IsGameOver = true;
@@ -161,11 +163,15 @@ public class PlayModeStateMachine : MonoBehaviour
         {
             base.Enter();
             Time.timeScale = 0f;
+            Context._playingCanvas.SetActive(false);
+            Context._pausedCanvas.SetActive(true);
         }
 
         protected internal override void Exit()
         {
             Time.timeScale = 1f;
+            Context._playingCanvas.SetActive(true);
+            Context._pausedCanvas.SetActive(false);
         }
 
         protected override void SwitchState()

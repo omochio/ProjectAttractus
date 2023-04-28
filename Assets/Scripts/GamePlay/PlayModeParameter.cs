@@ -11,13 +11,6 @@ public class PlayModeParameter : ScriptableObject
     }
 
     [SerializeField, Tooltip("Second")]
-    float _readyTextTime;
-    public float ReadyTextTime
-    {
-        get => _readyTextTime;
-    }
-
-    [SerializeField, Tooltip("Second")]
     float _timeLimit;
     public float TimeLimit
     {

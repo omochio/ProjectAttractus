@@ -6,6 +6,8 @@ public class PlayerStatus : ScriptableObject
 {
     void OnEnable()
     {
+        MoveInput = _moveInput;
+        SmoothedMoveInput = _smoothedMoveInput;
         MoveInvoked = _moveInvoked;
         SprintInvoked = _sprintInvoked;
         JumpInvoked = _jumpInvoked;
@@ -20,6 +22,22 @@ public class PlayerStatus : ScriptableObject
         IsWeaponHanded = _isWeaponHanded;
         IsAtraGunHanded = _isAtraGunHanded;
         SlideElapsedTime = _slideElapsedTime;
+    }
+
+    [NonSerialized]
+    Vector2 _moveInput = new();
+    public Vector3 MoveInput
+    {
+        get { return new Vector3(_moveInput.x, 0f, _moveInput.y); }
+        set { _moveInput = value; }
+    }
+
+    [NonSerialized]
+    Vector3 _smoothedMoveInput = new();
+    public Vector3 SmoothedMoveInput
+    {
+        get { return _smoothedMoveInput; }
+        set { _smoothedMoveInput = value; }
     }
 
     [NonSerialized]

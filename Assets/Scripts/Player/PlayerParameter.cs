@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName="ScriptableObject/Parameter/PlayerParameter")]
-public class PlayerParameters : ScriptableObject
+public class PlayerParameter : ScriptableObject
 {
     [SerializeField]
     Vector2 _walkSpeed;

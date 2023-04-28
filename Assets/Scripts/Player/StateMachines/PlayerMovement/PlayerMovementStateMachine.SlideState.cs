@@ -20,7 +20,7 @@ public partial class PlayerMovementStateMachine
             }
 
             Vector3 force = Context.transform.rotation
-                * Context._gamePlayInputManager.SmoothedMoveInput
+                * Context._playerStatus.SmoothedMoveInput
                 * slideForce;
 
             Context._rb.AddForce(force, ForceMode.Impulse);
