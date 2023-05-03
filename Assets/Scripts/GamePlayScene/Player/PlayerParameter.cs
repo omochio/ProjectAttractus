@@ -3,6 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName="ScriptableObject/Parameter/PlayerParameter")]
 public class PlayerParameter : ScriptableObject
 {
+    [SerializeField, Range(0f, float.MaxValue)]
+    float _mass;
+    public float Mass
+    {
+        get { return _mass; }
+    }
+
     [SerializeField]
     Vector2 _walkSpeed;
     public Vector3 WalkSpeed

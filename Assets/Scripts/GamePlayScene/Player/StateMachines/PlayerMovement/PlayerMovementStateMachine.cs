@@ -72,8 +72,9 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         TryGetComponent(out _collider);
         TryGetComponent(out _rb);
 
-        // Initialize support classes
+        // Init
         _playerStatus.SlideElapsedTime = _playerParameters.SlideCoolTime;
+        _rb.mass = _playerParameters.Mass;
 
         _stateMachine = new ImtStateMachine<PlayerMovementStateMachine, StateEvent>(this);
 
@@ -146,6 +147,10 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
+        if (!_playerStatus.IsGrounded)
+        {
+            _rb.velocity += _playerParameters.GravityAcceleration * Time.fixedDeltaTime * Vector3.down;
+        }
     }
 
     public void SwitchState()
