@@ -71,13 +71,20 @@ public class PlayModeStateMachine : MonoBehaviour
 
     class ReadyState : PlayModeStateBase
     {
-        Timer _timer;
+        Timer _timer = null;
 
         protected internal override void Enter()
         {
             base.Enter();
             Time.timeScale = 0f;
-            _timer = new(Time.unscaledTime, Context._playModeParameter.ReadyTime);
+            if (_timer != null)
+            {
+                _timer.PauseOrResume(Time.unscaledTime);
+            }
+            else
+            {
+                _timer = new(Time.unscaledTime, Context._playModeParameter.ReadyTime);
+            }
         }
 
         protected internal override void Update()
@@ -95,6 +102,7 @@ public class PlayModeStateMachine : MonoBehaviour
 
         protected internal override void Exit()
         {
+            _timer.PauseOrResume(Time.unscaledTime);
             Time.timeScale = 1f;
         }
 
@@ -114,22 +122,34 @@ public class PlayModeStateMachine : MonoBehaviour
 
     class PlayingState : PlayModeStateBase
     {
-        Timer _gameTimer;
+        Timer _timer = null;
 
         protected internal override void Enter()
         {
             base.Enter();
-            _gameTimer = new(Time.time, Context._playModeParameter.TimeLimit);
+            if (_timer != null)
+            {
+                _timer.PauseOrResume(Time.time);
+            }
+            else
+            {
+                _timer = new(Time.time, Context._playModeParameter.TimeLimit);
+            }
             Context._readyText.gameObject.SetActive(false);
         }
 
         protected internal override void Update()
         {
-            Context._timeLimitText.text = $"Time: {(int)_gameTimer.GetRemainTime(Time.time)}";
-            if (_gameTimer.IsTimeUp(Time.time))
+            Context._timeLimitText.text = $"Time: {(int)_timer.GetRemainTime(Time.time)}";
+            if (_timer.IsTimeUp(Time.time))
             {
                 Context._playModeStatus.IsGameOver = true;
             }
+        }
+
+        protected internal override void Exit()
+        {
+            _timer.PauseOrResume(Time.time);
         }
 
         protected override void SwitchState()

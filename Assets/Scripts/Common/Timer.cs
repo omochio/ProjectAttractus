@@ -1,7 +1,8 @@
 public class Timer
 {
-    readonly float _startTime;
-    readonly float _setTime;
+    float _startTime;
+    float _setTime;
+    bool _isPaused = false;
 
     public Timer(float startTime, float setTime)
     {
@@ -11,6 +12,11 @@ public class Timer
 
     public bool IsTimeUp(float currentTime)
     {
+        if (_isPaused)
+        {
+            return false;
+        }
+
         if (currentTime - _startTime >= _setTime)
         {
             return true;
@@ -23,6 +29,11 @@ public class Timer
 
     public float GetRemainTime(float currentTime)
     {
+        if (_isPaused)
+        {
+            return _setTime;
+        }
+
         if (IsTimeUp(currentTime))
         {
             return 0;
@@ -31,5 +42,24 @@ public class Timer
         {
             return _setTime - (currentTime - _startTime);
         }
+    }
+
+    public void PauseOrResume(float currentTime)
+    {
+        if (IsTimeUp(currentTime))
+        {
+            return;
+        }
+
+        if (_isPaused)
+        {
+            _startTime = currentTime;
+            _isPaused = false;
+        }
+        else
+        {
+            _setTime = GetRemainTime(currentTime);
+            _isPaused = true;
+        }    
     }
 }
