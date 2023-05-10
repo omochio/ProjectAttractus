@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717c7d1130d812b46a230452bc3c06d6, type: 3}
   m_Name: DefaultPlayerParameters
   m_EditorClassIdentifier: 
+  _mass: 100
   _walkSpeed: {x: 8, y: 8}
   _sprintSpeed: {x: 16, y: 16}
   _crouchSpeed: {x: 4, y: 4}
@@ -20,9 +21,9 @@ MonoBehaviour:
   _slideResistanceAcceleration: {x: 30, y: 30}
   _minSlidableSpeed: 10
   _slideCoolTime: 0.5
-  _jumpForce: 200
-  _jumpHorizontalAcceleration: {x: 0.3, y: 0.3}
+  _jumpForce: 1500
+  _jumpHorizontalAcceleration: {x: 0.5, y: 0.5}
   _atraForceHorizontalAcceleration: {x: 0.3, y: 0.3}
   _fallHorizontalAcceleration: {x: 0.1, y: 0.1}
-  _gravityAcceleration: 9.8
+  _gravityAcceleration: 40
   _basicSpeedLerpRate: 8
