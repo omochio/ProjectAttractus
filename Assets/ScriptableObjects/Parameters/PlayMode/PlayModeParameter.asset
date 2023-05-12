@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574a27ce55f74cb458c971c9b77b8272, type: 3}
   m_Name: PlayModeParameter
   m_EditorClassIdentifier: 
-  _readyTime: 3
+  _readyTime: 5
   _timeLimit: 60

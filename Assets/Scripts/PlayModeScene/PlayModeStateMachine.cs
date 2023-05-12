@@ -168,13 +168,26 @@ public class PlayModeStateMachine : MonoBehaviour
 
     class GameOverState : PlayModeStateBase
     {
+        Timer _timer;
+
         protected internal override void Enter()
         {
             base.Enter();
             Time.timeScale = 0f;
+            // temp
+            _timer = new(Time.unscaledTime, 5);
             Context._playingCanvas.SetActive(false);
             Context._gameOverCanvas.SetActive(true);
             Context._resultText.text = $"Score: {Context._playModeStatus.Score}";
+        }
+
+        protected internal override void Update()
+        {
+            // temp
+            if (_timer.IsTimeUp(Time.unscaledTime))
+            {
+                SceneChanger.SceneChange("TitleScene");
+            }
         }
 
         protected internal override void Exit()
