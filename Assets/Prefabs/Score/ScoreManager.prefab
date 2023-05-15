@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 0}
-  _playModeStatus: {fileID: 11400000, guid: ecbafbc76a7badd4d8079db4c815e4d5, type: 2}
+  _playModeStatus: {fileID: 0}

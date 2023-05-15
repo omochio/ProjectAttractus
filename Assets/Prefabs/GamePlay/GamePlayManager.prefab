@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playModeParameter: {fileID: 11400000, guid: 89727ead3018ba14bba426b122e3eb8c, type: 2}
-  _playModeStatus: {fileID: 11400000, guid: ecbafbc76a7badd4d8079db4c815e4d5, type: 2}
+  _playModeStatus: {fileID: 0}
+  _playingCanvas: {fileID: 0}
   _readyText: {fileID: 0}
   _timeLimitText: {fileID: 0}
-  _playingCanvas: {fileID: 0}
   _pausedCanvas: {fileID: 0}
+  _gameOverCanvas: {fileID: 0}
+  _resultText: {fileID: 0}

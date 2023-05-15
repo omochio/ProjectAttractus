@@ -1,19 +1,7 @@
-using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Status/PlayModeStatus")]
-public class PlayModeStatus : ScriptableObject
+public class PlayModeStatus : MonoBehaviour
 {
-    void OnEnable()
-    {
-        Score = _score;
-        IsReady = _isReady;
-        IsPlaying = _isPlaying;
-        IsPaused = _isPaused;
-        IsGameOver = _isGameOver;
-    }
-
-    [NonSerialized]
     int _score = 0;
     public int Score
     {
@@ -21,15 +9,13 @@ public class PlayModeStatus : ScriptableObject
         set => _score = value;
     }
 
-    [NonSerialized]
     bool _isReady = true;
     public bool IsReady
     {
         get => _isReady;
         set => _isReady = value;
     }
-
-    [NonSerialized]
+   
     bool _isPlaying = false;
     public bool IsPlaying
     {
@@ -37,7 +23,6 @@ public class PlayModeStatus : ScriptableObject
         set => _isPlaying = value;
     }
 
-    [NonSerialized]
     bool _isPaused = false;
     public bool IsPaused
     {
@@ -45,7 +30,6 @@ public class PlayModeStatus : ScriptableObject
         set => _isPaused = value;
     }
 
-    [NonSerialized]
     bool _isGameOver = false;
     public bool IsGameOver
     {

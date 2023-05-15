@@ -168,26 +168,16 @@ public class PlayModeStateMachine : MonoBehaviour
 
     class GameOverState : PlayModeStateBase
     {
-        Timer _timer;
-
         protected internal override void Enter()
         {
             base.Enter();
             Time.timeScale = 0f;
-            // temp
-            _timer = new(Time.unscaledTime, 5);
             Context._playingCanvas.SetActive(false);
             Context._gameOverCanvas.SetActive(true);
             Context._resultText.text = $"Score: {Context._playModeStatus.Score}";
-        }
-
-        protected internal override void Update()
-        {
             // temp
-            if (_timer.IsTimeUp(Time.unscaledTime))
-            {
-                SceneChanger.SceneChange("TitleScene");
-            }
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
 
         protected internal override void Exit()
@@ -205,6 +195,9 @@ public class PlayModeStateMachine : MonoBehaviour
             Time.timeScale = 0f;
             Context._playingCanvas.SetActive(false);
             Context._pausedCanvas.SetActive(true);
+            // temp
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
 
         protected internal override void Exit()
@@ -212,6 +205,9 @@ public class PlayModeStateMachine : MonoBehaviour
             Time.timeScale = 1f;
             Context._playingCanvas.SetActive(true);
             Context._pausedCanvas.SetActive(false);
+            // temp
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         protected override void SwitchState()

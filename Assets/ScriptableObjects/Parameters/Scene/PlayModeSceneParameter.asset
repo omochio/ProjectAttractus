@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512587a89171cce47ad7ac4f1249915c, type: 3}
   m_Name: PlayModeSceneParameter
   m_EditorClassIdentifier: 
+  _statuses:
+  - {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
+  - {fileID: 11400000, guid: ecbafbc76a7badd4d8079db4c815e4d5, type: 2}
   _isCursorVisible: 0
   _cursorMode: 1

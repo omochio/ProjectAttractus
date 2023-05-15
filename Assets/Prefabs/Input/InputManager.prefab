@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f44457e799950b4983e39cddbddd25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStatus: {fileID: 11400000, guid: 6a0beb7e2141f3e47a05efc1ac36bd1e, type: 2}
+  _playerStatus: {fileID: 0}
   _playerParameter: {fileID: 11400000, guid: 2e5c9d6a2d9392546a80916922c42f64, type: 2}
-  _playModeStatus: {fileID: 11400000, guid: ecbafbc76a7badd4d8079db4c815e4d5, type: 2}
+  _playModeStatus: {fileID: 0}

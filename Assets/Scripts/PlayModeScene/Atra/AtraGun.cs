@@ -24,7 +24,6 @@ public class AtraGun : MonoBehaviour, IAtraGun
 
     public void AddAtraForce(Transform playerTransform, Rigidbody playerRb)
     {
-        //Debug.Log("Atra");
         if (_atraObj)
         {
             _atraObj.TryGetComponent(out _atra);
