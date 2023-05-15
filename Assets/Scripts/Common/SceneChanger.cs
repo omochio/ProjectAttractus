@@ -4,9 +4,6 @@ public class SceneChanger
 {
     public static void SceneChange(string sceneName)
     {
-        //string loadingSceneName = "LoadingScene";
-
-        //SceneManager.LoadScene(loadingSceneName, LoadSceneMode.Single);
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
     }
 }
