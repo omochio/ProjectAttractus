@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour, IWeapon
@@ -6,21 +5,20 @@ public class Weapon : MonoBehaviour, IWeapon
     [SerializeField]
     WeaponParameter _weaponParameter;
 
-    TMP_Text _ammoText;
-
     float _reloadElapsedTime;
     float _shotElapsedTime;
-    float _ammoCount;
+    int _ammoCount;
+    public int AmmoCount
+    {
+        get => _ammoCount;
+    }
 
     [SerializeField]
     PlayerStatus _playerStatus;
     
-    public void Init(TMP_Text txt)
+    public void Init()
     {
-        _ammoText = txt;
-
         _ammoCount = _weaponParameter.MagazineSize;
-        _ammoText.text = $"Ammo: {_ammoCount}";
     }
 
     public void ResetTimeCount()
@@ -40,13 +38,11 @@ public class Weapon : MonoBehaviour, IWeapon
         else
         {
             Ray ray = new(Camera.main.transform.position, Camera.main.transform.forward);
-            //Debug.Log(_bulletsCount);
             if (_weaponParameter.IsAutomatic)
             {
                 if (_shotElapsedTime >= (1f / _weaponParameter.FireRate))
                 {
                     --_ammoCount;
-                    _ammoText.text = $"Ammo: {_ammoCount}";
                     // TODO: Temporary implementation
                     Instantiate(_weaponParameter.ProjectileObj, Camera.main.transform.position, Camera.main.transform.rotation);
                     if (Physics.Raycast(ray, out RaycastHit hit))
@@ -62,7 +58,6 @@ public class Weapon : MonoBehaviour, IWeapon
             else
             {
                 --_ammoCount;
-                _ammoText.text = $"Ammo: {_ammoCount}";
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
@@ -75,12 +70,10 @@ public class Weapon : MonoBehaviour, IWeapon
     public void Reload() 
     {
         _reloadElapsedTime += Time.fixedDeltaTime;
-        _ammoText.text = $"Ammo: <color=#FFFF00FF>Reloading</color>";
 
         if (_reloadElapsedTime >= _weaponParameter.ReloadTime)
         {
             _ammoCount = _weaponParameter.MagazineSize;
-            _ammoText.text = $"Ammo: {_ammoCount}";
             _playerStatus.ReloadInvoked = false;
             _reloadElapsedTime = 0f;
         }

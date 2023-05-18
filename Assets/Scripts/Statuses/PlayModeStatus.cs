@@ -2,13 +2,6 @@ using UnityEngine;
 
 public class PlayModeStatus : MonoBehaviour
 {
-    int _score = 0;
-    public int Score
-    {
-        get => _score;
-        set => _score = value;
-    }
-
     bool _isReady = true;
     public bool IsReady
     {

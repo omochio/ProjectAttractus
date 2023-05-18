@@ -40,7 +40,7 @@ public class PlayModeStateMachine : MonoBehaviour
     [SerializeField]
     GameObject _gameOverCanvas;
     [SerializeField]
-    TMP_Text _resultText;
+    ScoreManager _scoreManager;
 
     UnityAction _switchState;
 
@@ -174,7 +174,6 @@ public class PlayModeStateMachine : MonoBehaviour
             Time.timeScale = 0f;
             Context._playingCanvas.SetActive(false);
             Context._gameOverCanvas.SetActive(true);
-            Context._resultText.text = $"Score: {Context._playModeStatus.Score}";
             // temp
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
