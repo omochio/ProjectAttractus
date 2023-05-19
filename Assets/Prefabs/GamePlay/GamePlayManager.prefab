@@ -51,4 +51,5 @@ MonoBehaviour:
   _timeLimitText: {fileID: 0}
   _pausedCanvas: {fileID: 0}
   _gameOverCanvas: {fileID: 0}
-  _resultText: {fileID: 0}
+  _newRecordTextObj: {fileID: 0}
+  _scoreManager: {fileID: 0}
