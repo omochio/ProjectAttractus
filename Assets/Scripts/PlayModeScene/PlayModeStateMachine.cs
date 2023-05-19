@@ -20,7 +20,7 @@ public class PlayModeStateMachine : MonoBehaviour
         Ready,
         Playing,
         Pause,
-        GameOver
+        GameSet
     }
 
     ImtStateMachine<PlayModeStateMachine, StateEvent> _stateMachine;
@@ -40,6 +40,8 @@ public class PlayModeStateMachine : MonoBehaviour
     [SerializeField]
     GameObject _gameOverCanvas;
     [SerializeField]
+    GameObject _newRecordTextObj;
+    [SerializeField]
     ScoreManager _scoreManager;
 
     UnityAction _switchState;
@@ -55,7 +57,7 @@ public class PlayModeStateMachine : MonoBehaviour
         _stateMachine.AddTransition<ReadyState, PauseState>(StateEvent.Pause);
 
         // From PlayingState
-        _stateMachine.AddTransition<PlayingState, GameOverState>(StateEvent.GameOver);
+        _stateMachine.AddTransition<PlayingState, GameSetState>(StateEvent.GameSet);
         _stateMachine.AddTransition<PlayingState, PauseState>(StateEvent.Pause);
 
         // From PauseState
@@ -161,12 +163,12 @@ public class PlayModeStateMachine : MonoBehaviour
             else if (Context._playModeStatus.IsGameOver)
             {
                 Context._playModeStatus.IsPlaying = false;
-                stateMachine.SendEvent(StateEvent.GameOver);
+                stateMachine.SendEvent(StateEvent.GameSet);
             }
         }
     }
 
-    class GameOverState : PlayModeStateBase
+    class GameSetState : PlayModeStateBase
     {
         protected internal override void Enter()
         {
@@ -174,9 +176,14 @@ public class PlayModeStateMachine : MonoBehaviour
             Time.timeScale = 0f;
             Context._playingCanvas.SetActive(false);
             Context._gameOverCanvas.SetActive(true);
+            if (Context._scoreManager.IsNewRecord)
+            {
+                Context._newRecordTextObj.SetActive(true);
+            }
             // temp
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
+            Context._scoreManager.SaveHightScore();
         }
 
         protected internal override void Exit()

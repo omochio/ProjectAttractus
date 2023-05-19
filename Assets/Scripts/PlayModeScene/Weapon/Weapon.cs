@@ -4,6 +4,8 @@ public class Weapon : MonoBehaviour, IWeapon
 {
     [SerializeField]
     WeaponParameter _weaponParameter;
+    [SerializeField]
+    PlayerStatus _playerStatus;
 
     float _reloadElapsedTime;
     float _shotElapsedTime;
@@ -13,8 +15,6 @@ public class Weapon : MonoBehaviour, IWeapon
         get => _ammoCount;
     }
 
-    [SerializeField]
-    PlayerStatus _playerStatus;
     
     public void Init()
     {
