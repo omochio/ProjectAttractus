@@ -46,7 +46,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         Slide,
         Crouch,
         Jump,
-        AtraForce,
+        Ride,
         Fall
     }
 
@@ -78,9 +78,9 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
 
         _stateMachine.SetStartState<IdleState>();
 
-        // From AtraForce
-        _stateMachine.AddTransition<AtraForceState, FallState>(StateEvent.Idle);
-        _stateMachine.AddTransition<AtraForceState, FallState>(StateEvent.Fall);
+        // From Ride
+        _stateMachine.AddTransition<RideState, FallState>(StateEvent.Idle);
+        _stateMachine.AddTransition<RideState, FallState>(StateEvent.Fall);
 
         // From Fall
         _stateMachine.AddTransition<FallState, IdleState>(StateEvent.Idle);
@@ -88,14 +88,14 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<FallState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<FallState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<FallState, SlideState>(StateEvent.Slide);
-        _stateMachine.AddTransition<FallState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<FallState, RideState>(StateEvent.Ride);
 
         // From Idle
         _stateMachine.AddTransition<IdleState, WalkState>(StateEvent.Walk);
         _stateMachine.AddTransition<IdleState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<IdleState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<IdleState, JumpState>(StateEvent.Jump);
-        _stateMachine.AddTransition<IdleState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<IdleState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<IdleState, FallState>(StateEvent.Fall);
 
         // From Walk
@@ -103,7 +103,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<WalkState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<WalkState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<WalkState, JumpState>(StateEvent.Jump);
-        _stateMachine.AddTransition<WalkState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<WalkState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<WalkState, FallState>(StateEvent.Fall);
 
         // From Sprint
@@ -112,7 +112,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<SprintState, SlideState>(StateEvent.Slide);
         _stateMachine.AddTransition<SprintState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<SprintState, JumpState>(StateEvent.Jump);
-        _stateMachine.AddTransition<SprintState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<SprintState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<SprintState, FallState>(StateEvent.Fall);
 
         // From Slide
@@ -121,7 +121,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<SlideState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<SlideState, CrouchState>(StateEvent.Crouch);
         _stateMachine.AddTransition<SlideState, JumpState>(StateEvent.Jump);
-        _stateMachine.AddTransition<SlideState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<SlideState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<SlideState, FallState>(StateEvent.Fall);
 
         // From Crouch
@@ -129,7 +129,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<CrouchState, WalkState>(StateEvent.Walk);
         _stateMachine.AddTransition<CrouchState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<CrouchState, JumpState>(StateEvent.Jump);
-        _stateMachine.AddTransition<CrouchState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<CrouchState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<CrouchState, FallState>(StateEvent.Fall);
 
         // From Jump
@@ -138,7 +138,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
         _stateMachine.AddTransition<JumpState, SprintState>(StateEvent.Sprint);
         _stateMachine.AddTransition<JumpState, SlideState>(StateEvent.Slide);
         _stateMachine.AddTransition<JumpState, CrouchState>(StateEvent.Crouch);
-        _stateMachine.AddTransition<JumpState, AtraForceState>(StateEvent.AtraForce);
+        _stateMachine.AddTransition<JumpState, RideState>(StateEvent.Ride);
         _stateMachine.AddTransition<JumpState, FallState>(StateEvent.Fall);
     }
 
@@ -155,7 +155,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     {
         if (_playerStatus.IsAtraForceEnabled)
         {
-            _stateMachine.SendEvent(StateEvent.AtraForce);
+            _stateMachine.SendEvent(StateEvent.Ride);
         }
         else if (_stateMachine.CurrentStateName != "JumpState" && !_playerStatus.IsGrounded)
         {

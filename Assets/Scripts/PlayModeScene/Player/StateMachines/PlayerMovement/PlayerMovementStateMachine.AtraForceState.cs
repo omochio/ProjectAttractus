@@ -2,7 +2,7 @@
 
 public partial class PlayerMovementStateMachine
 {
-    class AtraForceState : PlayerMovementStateBase
+    class RideState : PlayerMovementStateBase
     {
         protected internal override void Enter()
         {
