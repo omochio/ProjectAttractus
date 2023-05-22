@@ -56,8 +56,6 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
 
     [SerializeField]
     PlayerStatus _playerStatus;
-    //[SerializeField]
-    //GamePlayInputManager _gamePlayInputManager;
     Collider _collider;
     Rigidbody _rb;
     [SerializeField]
@@ -147,7 +145,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        if (!_playerStatus.IsGrounded)
+        if (!_playerStatus.IsGrounded && _playerStatus.IsGravityEnabled)
         {
             _rb.velocity += _playerParameters.GravityAcceleration * Time.fixedDeltaTime * Vector3.down;
         }

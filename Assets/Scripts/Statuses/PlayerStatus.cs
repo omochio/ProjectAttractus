@@ -113,4 +113,11 @@ public class PlayerStatus : MonoBehaviour
         get { return _slideElapsedTime; }
         set { _slideElapsedTime = value; }
     }
+
+    bool _isGravityEnabled = true;
+    public bool IsGravityEnabled
+    {
+        get => _isGravityEnabled;
+        set => _isGravityEnabled = value;
+    }
 }
