@@ -31,7 +31,7 @@ public class AtraGun : MonoBehaviour, IAtraGun
         }
         else
         {
-            _playerStatus.IsAtraForceEnabled = false;
+            _playerStatus.IsRiding = false;
         }
     }
 }

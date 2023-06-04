@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EnableAtraForce",
+                    "name": "Ride",
                     "type": "Button",
                     "id": "0895ee98-54d3-4e1c-a8e0-1010d5032e30",
                     "expectedControlType": "Button",
@@ -256,7 +256,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EnableAtraForce",
+                    "action": "Ride",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

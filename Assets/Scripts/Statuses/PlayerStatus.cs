@@ -86,11 +86,11 @@ public class PlayerStatus : MonoBehaviour
         set => _isSlideCooling = value;
     }
 
-    bool _isAtraForceEnabled = false;
-    public bool IsAtraForceEnabled
+    bool _isRiding = false;
+    public bool IsRiding
     {
-        get => _isAtraForceEnabled; 
-        set => _isAtraForceEnabled = value;
+        get => _isRiding; 
+        set => _isRiding = value;
     }
 
     bool _isWeaponHanded = true;

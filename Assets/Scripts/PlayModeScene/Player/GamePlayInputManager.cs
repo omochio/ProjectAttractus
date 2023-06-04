@@ -31,7 +31,7 @@ public class GamePlayInputManager : MonoBehaviour
         _input.actions["Reload"].performed += OnReload;
         _input.actions["SwitchToAtraGunHolder"].performed += OnSwitchToAtraGunHolder;
         _input.actions["SwitchToWeaponHolder"].performed += OnSwitchToWeaponHolder;
-        _input.actions["EnableAtraForce"].performed += OnEnableAtraForce;
+        _input.actions["Ride"].performed += OnRide;
         _input.actions["Pause"].performed += OnPause;
     }
 
@@ -73,7 +73,7 @@ public class GamePlayInputManager : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _playerStatus.IsAtraForceEnabled = false;
+                _playerStatus.IsRiding = false;
                 if (_playerStatus.IsGrounded)
                 {
                     _playerStatus.JumpInvoked = true;
@@ -140,18 +140,18 @@ public class GamePlayInputManager : MonoBehaviour
         }
     }
 
-    void OnEnableAtraForce(InputAction.CallbackContext context)
+    void OnRide(InputAction.CallbackContext context)
     {
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                if (_playerStatus.IsAtraForceEnabled)
+                if (_playerStatus.IsRiding)
                 {
-                    _playerStatus.IsAtraForceEnabled = false;
+                    _playerStatus.IsRiding = false;
                 }
                 else
                 {
-                    _playerStatus.IsAtraForceEnabled = true;
+                    _playerStatus.IsRiding = true;
                 }
                 break;
         }

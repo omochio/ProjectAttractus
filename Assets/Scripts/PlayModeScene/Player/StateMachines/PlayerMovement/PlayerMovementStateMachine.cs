@@ -153,7 +153,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
 
     public void SwitchState()
     {
-        if (_playerStatus.IsAtraForceEnabled)
+        if (_playerStatus.IsRiding)
         {
             _stateMachine.SendEvent(StateEvent.Ride);
         }
