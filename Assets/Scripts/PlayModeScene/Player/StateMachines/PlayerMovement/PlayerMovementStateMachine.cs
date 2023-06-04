@@ -145,7 +145,7 @@ public partial class PlayerMovementStateMachine : MonoBehaviour
     public void UpdateState()
     {
         _stateMachine.Update();
-        if (!_playerStatus.IsGrounded && _playerStatus.IsGravityEnabled)
+        if (_playerStatus.IsGravityEnabled)
         {
             _rb.velocity += _playerParameters.GravityAcceleration * Time.fixedDeltaTime * Vector3.down;
         }
